@@ -16,11 +16,18 @@ const Navbar = () => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <IconButton size="large" edge="start" color="inherit" aria-label="logo">
-          <LocalMallIcon />
-        </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Ecommerce
+          <NavLink to="/" style={{ color: "#fff", textDecoration: "none" }}>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="logo"
+            >
+              <LocalMallIcon />
+            </IconButton>
+            Ecommerce
+          </NavLink>
         </Typography>
         <Stack direction="row" spacing={2}>
           <Button color="inherit">
