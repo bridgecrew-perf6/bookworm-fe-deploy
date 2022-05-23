@@ -11,7 +11,6 @@ import LocalMallIcon from "@mui/icons-material/LocalMall";
 
 const Navbar = () => {
   let location = useLocation().pathname;
-  console.log(location);
 
   return (
     <AppBar position="static">

@@ -11,10 +11,10 @@ function Layout({
   return (
     <Container maxWidth="lg">
       <div className="jumbotron">
-        <Typography variant="h2" mt={2}>
+        <Typography variant="h2" mt={2} textAlign="center">
           {title}
         </Typography>
-        <Typography variant="h6" mt={2}>
+        <Typography variant="h6" mt={2} mb={4} textAlign="center">
           {description}
         </Typography>
       </div>
