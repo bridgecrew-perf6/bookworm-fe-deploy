@@ -29,7 +29,7 @@ function Signup() {
     setValues({ ...values, error: false, [property]: event.target.value });
   };
 
-  const { name, email, password } = values;
+  const { name, email, password, isLoading, success, error } = values;
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -120,7 +120,6 @@ function Signup() {
 
   const showSpinner = () => {
     return (
-      // <h1>hahaha</h1>
       <Modal
         open={values.isLoading}
         aria-labelledby="modal-modal-title"
@@ -207,7 +206,7 @@ function Signup() {
 
   return (
     <Layout title="Sign Up" description="Register to Bookworm">
-      {values.isLoading ? showSpinner() : ""}
+      {showSpinner()}
       {showError()}
       {showSuccess()}
       {signUpForm()}
