@@ -1,4 +1,4 @@
-import { Link, useLocation, NavLink } from "react-router-dom";
+import { Link, useNavigate, NavLink, Navigate } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -8,9 +8,10 @@ import {
   Button,
 } from "@mui/material";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
+import { signout } from "../auth";
 
 const Navbar = () => {
-  let location = useLocation().pathname;
+  const navigate = useNavigate();
 
   return (
     <AppBar position="static">
@@ -64,6 +65,18 @@ const Navbar = () => {
             >
               Sign Up
             </NavLink>
+          </Button>
+          <Button
+            color="inherit"
+            onClick={() => {
+              signout(() => {
+                navigate("/");
+              });
+            }}
+          >
+            <span style={{ color: "#fff", textDecoration: "none" }}>
+              Sign Out
+            </span>
           </Button>
         </Stack>
       </Toolbar>
