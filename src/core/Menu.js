@@ -8,7 +8,7 @@ import {
   Button,
 } from "@mui/material";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
-import { signout } from "../auth";
+import { signout, isAuthenticated } from "../auth";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -42,42 +42,50 @@ const Navbar = () => {
               Shop
             </NavLink>
           </Button>
-          <Button color="inherit">
-            <NavLink
-              to="signin"
-              style={({ isActive }) =>
-                isActive
-                  ? { color: "#ff9900", textDecoration: "none" }
-                  : { color: "#fff", textDecoration: "none" }
-              }
+          {!isAuthenticated() && (
+            <Button color="inherit">
+              <NavLink
+                to="signin"
+                style={({ isActive }) =>
+                  isActive
+                    ? { color: "#ff9900", textDecoration: "none" }
+                    : { color: "#fff", textDecoration: "none" }
+                }
+              >
+                Sign In
+              </NavLink>
+            </Button>
+          )}
+
+          {!isAuthenticated() && (
+            <Button color="inherit">
+              <NavLink
+                to="signup"
+                style={({ isActive }) =>
+                  isActive
+                    ? { color: "#ff9900", textDecoration: "none" }
+                    : { color: "#fff", textDecoration: "none" }
+                }
+              >
+                Sign Up
+              </NavLink>
+            </Button>
+          )}
+
+          {isAuthenticated() && (
+            <Button
+              color="inherit"
+              onClick={() => {
+                signout(() => {
+                  navigate("/");
+                });
+              }}
             >
-              Sign In
-            </NavLink>
-          </Button>
-          <Button color="inherit">
-            <NavLink
-              to="signup"
-              style={({ isActive }) =>
-                isActive
-                  ? { color: "#ff9900", textDecoration: "none" }
-                  : { color: "#fff", textDecoration: "none" }
-              }
-            >
-              Sign Up
-            </NavLink>
-          </Button>
-          <Button
-            color="inherit"
-            onClick={() => {
-              signout(() => {
-                navigate("/");
-              });
-            }}
-          >
-            <span style={{ color: "#fff", textDecoration: "none" }}>
-              Sign Out
-            </span>
-          </Button>
+              <span style={{ color: "#fff", textDecoration: "none" }}>
+                Sign Out
+              </span>
+            </Button>
+          )}
         </Stack>
       </Toolbar>
     </AppBar>
