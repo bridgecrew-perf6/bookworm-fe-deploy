@@ -136,6 +136,9 @@ function Signin() {
         return <Navigate to="/user/dashboard" replace />;
       }
     }
+    if (isAuthenticated()) {
+      return <Navigate to="/" replace />;
+    }
   };
 
   const showError = () => {

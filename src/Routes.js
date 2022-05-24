@@ -6,6 +6,8 @@ import Navbar from "./core/Menu";
 import { createTheme, ThemeProvider, Typography } from "@mui/material";
 import PrivateRoute from "./auth/PrivateRoute";
 import UserDashboard from "./user/UserDashboard";
+import AdminRoute from "./auth/AdminRoute";
+import AdminDashboard from "./user/AdminDashboard";
 
 const Routes = () => {
   const theme = createTheme({
@@ -21,20 +23,20 @@ const Routes = () => {
           <Route path="/" element={<Home />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
-          {/* <Route
-            path="/dashboard"
-            element={
-              <PrivateRoute>
-                <UserDashboard />
-              </PrivateRoute>
-            }
-          /> */}
           <Route
             path="/user/dashboard/*"
             element={
               <PrivateRoute>
                 <UserDashboard />
               </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/dashboard/*"
+            element={
+              <AdminRoute>
+                <AdminDashboard />
+              </AdminRoute>
             }
           />
         </Switch>

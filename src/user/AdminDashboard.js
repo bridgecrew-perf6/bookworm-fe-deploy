@@ -20,10 +20,10 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import {
   mainListItems,
   secondaryListItems,
-} from "./userDashboardContent/components/listItems";
+} from "./adminDashboardContent/components/listItems";
 import { Routes, Route } from "react-router-dom";
-import DashboardLanding from "./userDashboardContent/DashboardLanding";
-import DashboardProfile from "./userDashboardContent/DashboardProfile";
+import DashboardLanding from "./adminDashboardContent/DashboardLanding";
+import DashboardProfile from "./adminDashboardContent/DashboardProfile";
 
 function Copyright(props) {
   return (
@@ -128,6 +128,6 @@ function DashboardContent() {
   );
 }
 
-export default function UserDashboard() {
+export default function AdminDashboard() {
   return <DashboardContent />;
 }

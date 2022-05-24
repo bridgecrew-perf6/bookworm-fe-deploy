@@ -147,7 +147,11 @@ const Navbar = () => {
               sx={{ my: 2, color: "white", display: "block" }}
             >
               <NavLink
-                to="user/dashboard"
+                to={
+                  isAuthenticated() && isAuthenticated().user.role == 1
+                    ? "admin/dashboard"
+                    : "user/dashboard"
+                }
                 style={({ isActive }) =>
                   isActive
                     ? { color: "#ff9900", textDecoration: "none" }
