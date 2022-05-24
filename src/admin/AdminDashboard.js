@@ -16,6 +16,8 @@ import Paper from "@mui/material/Paper";
 import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import SettingsIcon from "@mui/icons-material/Settings";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import {
   mainListItems,
@@ -24,24 +26,7 @@ import {
 import { Routes, Route } from "react-router-dom";
 import DashboardLanding from "./adminDashboardContent/DashboardLanding";
 import DashboardProfile from "./adminDashboardContent/DashboardProfile";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import AddCategory from "./AddCategory";
 
 const drawerWidth = 240;
 
@@ -89,12 +74,20 @@ function DashboardContent() {
             sx={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "flex-end",
+              justifyContent: "space-around",
               px: [1],
             }}
           >
+            {open ? (
+              <Typography variant="h6" sx={{ fontFamily: "Lato" }}>
+                Configuration
+              </Typography>
+            ) : (
+              ""
+            )}
+
             <IconButton onClick={toggleDrawer}>
-              <ChevronLeftIcon />
+              {open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
             </IconButton>
           </Toolbar>
           <Divider />
@@ -121,6 +114,7 @@ function DashboardContent() {
           <Routes>
             <Route path="/" element={<DashboardLanding />} />
             <Route path="/profile" element={<DashboardProfile />} />
+            <Route path="/create/category" element={<AddCategory />} />
           </Routes>
         </Box>
       </Box>

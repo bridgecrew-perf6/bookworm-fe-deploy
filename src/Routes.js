@@ -7,7 +7,7 @@ import { createTheme, ThemeProvider, Typography } from "@mui/material";
 import PrivateRoute from "./auth/PrivateRoute";
 import UserDashboard from "./user/UserDashboard";
 import AdminRoute from "./auth/AdminRoute";
-import AdminDashboard from "./user/AdminDashboard";
+import AdminDashboard from "./admin/AdminDashboard";
 
 const Routes = () => {
   const theme = createTheme({

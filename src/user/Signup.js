@@ -210,7 +210,6 @@ function Signup() {
       {showError()}
       {showSuccess()}
       {signUpForm()}
-      {showSpinner()}
     </Layout>
   );
 }

@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
+import { ListItemText } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
@@ -43,29 +44,36 @@ const Navbar = () => {
     <AppBar position="static" sx={{ background: "#34495e" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
+          {/* Logo in Wide View */}
           <BookOutlinedIcon
             sx={{
               display: { xs: "none", md: "flex" },
               mr: 1,
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              navigate("/");
             }}
           />
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href="/"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
-              fontWeight: 700,
-              letterSpacing: ".1rem",
+              fontWeight: 400,
               color: "inherit",
               textDecoration: "none",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              navigate("/");
             }}
           >
             bookWorm
           </Typography>
 
+          {/* Menu in Narrow View */}
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -103,29 +111,52 @@ const Navbar = () => {
                   <Typography textAlign="center">Shop</Typography>
                 </MenuItem>
               </NavLink>
+              <NavLink
+                to={
+                  isAuthenticated() && isAuthenticated().user.role == 1
+                    ? "admin/dashboard"
+                    : "user/dashboard"
+                }
+                style={{ color: "#000", textDecoration: "none" }}
+              >
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">Dashboard</Typography>
+                </MenuItem>
+              </NavLink>
             </Menu>
           </Box>
+
+          {/* Logo in Narrow View */}
           <BookOutlinedIcon
-            sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
+            sx={{
+              display: { xs: "flex", md: "none" },
+              mr: 1,
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              navigate("/");
+            }}
           />
           <Typography
             variant="h5"
             noWrap
-            component="a"
-            href=""
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
               flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
+              fontWeight: 400,
               color: "inherit",
               textDecoration: "none",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              navigate("/");
             }}
           >
-            LOGO
+            bookWorm
           </Typography>
+
+          {/* Menu in Wide View */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Button
               onClick={handleCloseNavMenu}
@@ -163,8 +194,9 @@ const Navbar = () => {
             </Button>
           </Box>
 
+          {/* Tooltip in Wide View */}
           <Box sx={{ flexGrow: 0, display: "flex" }}>
-            {!isAuthenticated() && (
+            {isAuthenticated() && (
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar alt="Remy Sharp" src={profpic} />
