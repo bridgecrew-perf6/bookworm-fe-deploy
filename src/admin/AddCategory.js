@@ -169,12 +169,12 @@ function AddCategory() {
     );
   };
   return (
-    <div>
+    <Box sx={{ margin: "auto", textAlign: "center" }}>
       {showSpinner()}
       {showError()}
       {showSuccess()}
       {newCategoryForm()}
-    </div>
+    </Box>
   );
 }
 

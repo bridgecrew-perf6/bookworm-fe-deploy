@@ -27,6 +27,7 @@ import { Routes, Route } from "react-router-dom";
 import DashboardLanding from "./adminDashboardContent/DashboardLanding";
 import DashboardProfile from "./adminDashboardContent/DashboardProfile";
 import AddCategory from "./AddCategory";
+import AddProduct from "./AddProduct";
 
 const drawerWidth = 240;
 
@@ -115,6 +116,7 @@ function DashboardContent() {
             <Route path="/" element={<DashboardLanding />} />
             <Route path="/profile" element={<DashboardProfile />} />
             <Route path="/create/category" element={<AddCategory />} />
+            <Route path="/create/product" element={<AddProduct />} />
           </Routes>
         </Box>
       </Box>
