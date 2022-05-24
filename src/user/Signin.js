@@ -10,7 +10,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import Layout from "../core/Layout";
-import { signin, authenticate } from "../auth";
+import { signin, authenticate, isAuthenticated } from "../auth";
 
 function Signin() {
   const [values, setValues] = useState({
@@ -30,6 +30,7 @@ function Signin() {
   };
 
   const { email, password, isLoading, error, redirectToReferrer } = values;
+  const { user } = isAuthenticated();
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -129,7 +130,11 @@ function Signin() {
 
   const redirectUser = () => {
     if (redirectToReferrer) {
-      return <Navigate to="/" replace />;
+      if (user && user.role == 1) {
+        return <Navigate to="/admin/dashboard" replace />;
+      } else {
+        return <Navigate to="/user/dashboard" replace />;
+      }
     }
   };
 

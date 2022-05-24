@@ -147,7 +147,7 @@ const Navbar = () => {
               sx={{ my: 2, color: "white", display: "block" }}
             >
               <NavLink
-                to="dashboard"
+                to="user/dashboard"
                 style={({ isActive }) =>
                   isActive
                     ? { color: "#ff9900", textDecoration: "none" }
