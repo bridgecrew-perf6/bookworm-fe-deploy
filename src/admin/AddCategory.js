@@ -142,14 +142,13 @@ function AddCategory() {
 
   const newCategoryForm = () => {
     return (
-      <FormControl error="true">
+      <FormControl sx={{ minWidth: "500px" }} variant="outline">
         <TextField
           // error={name ? false : true}
           id="name"
-          label="Name"
+          label=" Category Name"
           type="text"
           // helperText="Incorrect entry."
-          placeholder="Input category name..."
           style={{
             marginTop: "25px",
           }}
@@ -170,10 +169,12 @@ function AddCategory() {
   };
   return (
     <Box sx={{ margin: "auto", textAlign: "center" }}>
-      {showSpinner()}
-      {showError()}
-      {showSuccess()}
-      {newCategoryForm()}
+      <Layout title="Create Category" description="">
+        {showSpinner()}
+        {showError()}
+        {showSuccess()}
+        {newCategoryForm()}
+      </Layout>
     </Box>
   );
 }

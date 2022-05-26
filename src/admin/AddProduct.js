@@ -13,7 +13,11 @@ import {
   IconButton,
   Select,
   MenuItem,
+  makeStyles,
 } from "@mui/material";
+import MuiTextField from "@mui/material/TextField";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
@@ -23,8 +27,16 @@ import { styled } from "@mui/material/styles";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 
 const InputPhoto = styled("input")({
-  // display: "none",
+  display: "none",
 });
+
+const TextFieldCustom = styled(MuiTextField, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+  "& .MuiTextField-root": {
+    fontFamily: "Lato",
+  },
+}));
 
 function AddProduct() {
   const [values, setValues] = useState({
@@ -42,9 +54,6 @@ function AddProduct() {
     redirectToProfile: false,
     formData: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
-  // const [error, setError] = useState(false);
-  // const [success, setSuccess] = useState(false);
 
   // Load categories
   const init = () => {
@@ -84,6 +93,7 @@ function AddProduct() {
 
   // HOC => function returning another function
   const changeHandler = (name) => (event) => {
+    console.log(event);
     const value = name === "photo" ? event.target.files[0] : event.target.value;
     formData.set(name, value);
     setValues({ ...values, error: false, [name]: value });
@@ -202,28 +212,27 @@ function AddProduct() {
 
   const newProductForm = () => {
     return (
-      <FormControl error="true">
-        <TextField
-          // error={name ? false : true}
-          id="name"
-          label="Product Name"
-          type="text"
-          // helperText="Incorrect entry."
-          placeholder="Input product name..."
-          style={{
-            marginTop: "25px",
-          }}
-          onChange={changeHandler("name")}
-          value={name}
-        />
-
+      <FormControl sx={{ minWidth: "500px" }} variant="outline">
+        <FormControl focused="true">
+          <TextField
+            // error={name ? false : true}
+            id="name"
+            label="Product Name"
+            type="text"
+            // helperText="Incorrect entry."
+            style={{
+              marginTop: "25px",
+            }}
+            onChange={changeHandler("name")}
+            value={name}
+          />
+        </FormControl>
         <TextField
           // error={name ? false : true}
           id="description"
           label="Product Description"
           type="text"
           // helperText="Incorrect entry."
-          placeholder="Input category name..."
           style={{
             marginTop: "25px",
           }}
@@ -237,7 +246,6 @@ function AddProduct() {
           label="Product Price"
           type="number"
           // helperText="Incorrect entry."
-          placeholder="Input product price..."
           style={{
             marginTop: "25px",
           }}
@@ -273,7 +281,6 @@ function AddProduct() {
           label="Product Quantity"
           type="number"
           // helperText="Incorrect entry."
-          placeholder="Input product quantity..."
           style={{
             marginTop: "25px",
           }}
@@ -297,7 +304,15 @@ function AddProduct() {
           </FormControl>
         </Box>
 
-        <label htmlFor="photo">
+        <label
+          htmlFor="photo"
+          style={{
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            marginTop: "25px",
+          }}
+        >
           <InputPhoto
             accept="image/*"
             name="photo"
@@ -312,6 +327,17 @@ function AddProduct() {
           >
             <PhotoCamera />
           </IconButton>
+          <Button variant="outlined" size="medium" component="span">
+            Select image
+          </Button>
+          {photo && (
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
+              <Typography sx={{ marginLeft: "20px" }}>
+                Image selected
+              </Typography>
+              <CheckCircleOutlineIcon sx={{ marginLeft: "5px" }} />
+            </Box>
+          )}
         </label>
 
         <Button
@@ -328,10 +354,12 @@ function AddProduct() {
   };
   return (
     <Box sx={{ margin: "auto", textAlign: "center" }}>
-      {showSpinner()}
-      {showError()}
-      {showSuccess()}
-      {newProductForm()}
+      <Layout title="Create Product" description="">
+        {showSpinner()}
+        {showError()}
+        {showSuccess()}
+        {newProductForm()}
+      </Layout>
     </Box>
   );
 }

@@ -55,6 +55,9 @@ const Drawer = styled(MuiDrawer, {
       },
     }),
   },
+  "& .MuiTypography-root": {
+    fontFamily: "Lato",
+  },
 }));
 
 const mdTheme = createTheme();
@@ -106,7 +109,7 @@ function DashboardContent() {
                 ? theme.palette.grey[100]
                 : theme.palette.grey[900],
             flexGrow: 1,
-            height: "100vh",
+            height: "92.8vh",
             overflow: "auto",
           }}
         >

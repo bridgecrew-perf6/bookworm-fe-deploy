@@ -14,6 +14,9 @@ const Routes = () => {
     typography: {
       fontFamily: ["Poppins", "sans-serif"].join(","),
     },
+    // palette: {
+    //   primary: { main: "#f1c40f" },
+    // },
   });
   return (
     <ThemeProvider theme={theme}>
