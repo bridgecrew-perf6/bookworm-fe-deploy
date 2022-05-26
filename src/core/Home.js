@@ -3,6 +3,21 @@ import Layout from "./Layout";
 import { getProducts } from "./apiCore";
 import ProductCard from "./ProductCard";
 import { Typography } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import { styled } from "@mui/material/styles";
+import Divider from "@mui/material/Divider";
+import Chip from "@mui/material/Chip";
+
+const Root = styled("div")(({ theme }) => ({
+  width: "100%",
+  ...theme.typography.body2,
+  "& > :not(style) + :not(style)": {
+    marginTop: theme.spacing(2),
+  },
+}));
 
 function Home() {
   const [productsBySell, setProductsBySell] = useState([]);
@@ -40,17 +55,47 @@ function Home() {
 
   return (
     <Layout title="Homepage" description="Node React E-commerce App">
-      {/* {JSON.stringify(productsBySell)} */}
-      <Typography variant="h4">New Arrival</Typography>
-      {productsByArrival.map((product, i) => (
-        <ProductCard key={i} product={product} />
-      ))}
-      <hr />
-      {/* {JSON.stringify(productsByArrival)} */}
-      <Typography variant="h4">Best Seller</Typography>
-      {productsBySell.map((product, i) => (
-        <ProductCard key={i} product={product} />
-      ))}
+      <CssBaseline />
+
+      <Container maxWidth="md" sx={{ marginBottom: "100px" }}>
+        {/* {JSON.stringify(productsBySell)} */}
+        <Divider sx={{ marginBottom: "30px" }}>
+          <Chip
+            sx={{
+              fontSize: "20px",
+              padding: "25px 10px",
+              borderRadius: "50px",
+            }}
+            label="New Arrival"
+          />
+        </Divider>
+        <Grid container spacing={4}>
+          {productsByArrival.map((product, i) => (
+            <Grid item xs={4}>
+              <ProductCard key={i} product={product} />
+            </Grid>
+          ))}
+        </Grid>
+
+        {/* {JSON.stringify(productsByArrival)} */}
+        <Divider sx={{ marginTop: "100px", marginBottom: "30px" }}>
+          <Chip
+            sx={{
+              fontSize: "20px",
+              padding: "25px 10px",
+              borderRadius: "50px",
+            }}
+            label="Best Seller"
+          />
+        </Divider>
+        <Grid container spacing={4}>
+          {productsBySell.map((product, i) => (
+            <Grid item xs={4}>
+              <ProductCard key={i} product={product} />
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
     </Layout>
   );
 }

@@ -4,6 +4,11 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
+import { styled } from "@mui/material/styles";
+
+const FormControlLabelCustom = styled(FormControlLabel)(() => ({
+  paddingLeft: "10px",
+}));
 
 export default function ProductRadio({ prices, handleFilters }) {
   const [value, setValue] = React.useState(0);
@@ -16,7 +21,7 @@ export default function ProductRadio({ prices, handleFilters }) {
   const priceRadio = () => {
     return prices.map((price, i) => {
       return (
-        <FormControlLabel
+        <FormControlLabelCustom
           value={price._id}
           control={<Radio />}
           label={price.name}

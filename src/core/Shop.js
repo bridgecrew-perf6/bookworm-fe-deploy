@@ -5,7 +5,7 @@ import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import { getCategories, getFilteredProducts } from "./apiCore";
 import ProductCheckbox from "./ProductCheckbox";
-import { Typography } from "@mui/material";
+import { Typography, Button } from "@mui/material";
 import { prices } from "./fixedPrices";
 import ProductRadio from "./ProductRadio";
 import ProductCard from "./ProductCard";
@@ -15,6 +15,7 @@ function Shop() {
   const [error, setError] = useState(false);
   const [limit, setLimit] = useState(6);
   const [skip, setSkip] = useState(0);
+  const [size, setSize] = useState(0);
   const [filteredResults, setFilteredResults] = useState([]);
   const [myFilters, setMyFilters] = useState({
     filtersData: {
@@ -41,8 +42,42 @@ function Shop() {
         setError(data.error);
       } else {
         setFilteredResults(data.data);
+        setSize(data.size);
+        setSkip(0);
       }
     });
+  };
+
+  const loadMore = () => {
+    let toSkip = skip + limit;
+    getFilteredProducts(toSkip, limit, myFilters.filters).then((data) => {
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setFilteredResults([...filteredResults, ...data.data]);
+        setSize(data.size);
+        setSkip(toSkip);
+      }
+    });
+  };
+
+  const loadMoreButton = () => {
+    return (
+      size > 0 &&
+      size >= limit && (
+        <Box textAlign="center">
+          <Button
+            onClick={loadMore}
+            variant="contained"
+            sx={{
+              margin: "40px 0",
+            }}
+          >
+            Load more ...
+          </Button>
+        </Box>
+      )
+    );
   };
 
   useEffect(() => {
@@ -75,7 +110,7 @@ function Shop() {
 
   return (
     <Layout title="Shop Page" description="Find your book">
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ flexGrow: 1, marginBottom: "25px" }}>
         <Grid container spacing={2}>
           <Grid item xs={4}>
             <Typography variant="h6">Filter by Category</Typography>
@@ -84,6 +119,7 @@ function Shop() {
               categories={categories}
               handleFilters={(filters) => handleFilters(filters, "category")}
             />
+
             <Typography variant="h6">Filter by Price</Typography>
 
             <ProductRadio
@@ -92,11 +128,16 @@ function Shop() {
             />
           </Grid>
           <Grid item xs={8}>
-            {/* {JSON.stringify(filteredResults)} */}
-            {filteredResults.map((product, i) => (
-              <ProductCard key={i} product={product} />
-            ))}
+            <Grid container spacing={4}>
+              {filteredResults.map((product, i) => (
+                <Grid item xs={4}>
+                  <ProductCard key={i} product={product} />
+                </Grid>
+              ))}
+            </Grid>
+            {loadMoreButton()}
           </Grid>
+          {/* <hr /> */}
         </Grid>
       </Box>
     </Layout>

@@ -7,6 +7,12 @@ import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import CommentIcon from "@mui/icons-material/Comment";
+import { styled } from "@mui/material/styles";
+
+const ListItemButtonCustom = styled(ListItemButton)(() => ({
+  paddingLeft: "10px",
+  paddingTop: "0px",
+}));
 
 function ProductCheckbox({ categories, handleFilters }) {
   const [checked, setChecked] = useState([]);
@@ -36,25 +42,23 @@ function ProductCheckbox({ categories, handleFilters }) {
 
       return (
         <ListItem key={i} disablePadding>
-          <ListItemButton
+          <ListItemButtonCustom
             role={undefined}
             onClick={handleToggle(category)}
             dense
           >
-            <ListItemIcon>
-              <Checkbox
-                edge="start"
-                // untuk mengecek apa yang di tick
-                // kalau input biasa pakenya:
-                // <input value={checked.indexOf(category) !== -1}/>
-                checked={checked.indexOf(category) !== -1}
-                tabIndex={-1}
-                disableRipple
-                inputProps={{ "aria-labelledby": labelId }}
-              />
-            </ListItemIcon>
+            <Checkbox
+              edge="start"
+              // untuk mengecek apa yang di tick
+              // kalau input biasa pakenya:
+              // <input value={checked.indexOf(category) !== -1}/>
+              checked={checked.indexOf(category) !== -1}
+              tabIndex={-1}
+              disableRipple
+              inputProps={{ "aria-labelledby": labelId }}
+            />
             <ListItemText id={labelId} primary={category.name} />
-          </ListItemButton>
+          </ListItemButtonCustom>
         </ListItem>
       );
     });

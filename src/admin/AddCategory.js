@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { createCategory } from "./apiAdmin";
 
-import Layout from "../core/Layout";
+import DashboardLayout from "../core/DashboardLayout";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
 
@@ -169,12 +169,12 @@ function AddCategory() {
   };
   return (
     <Box sx={{ margin: "auto", textAlign: "center" }}>
-      <Layout title="Create Category" description="">
+      <DashboardLayout title="Create Category" description="">
         {showSpinner()}
         {showError()}
         {showSuccess()}
         {newCategoryForm()}
-      </Layout>
+      </DashboardLayout>
     </Box>
   );
 }

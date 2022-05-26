@@ -18,7 +18,7 @@ import {
 import MuiTextField from "@mui/material/TextField";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
-import Layout from "../core/Layout";
+import DashboardLayout from "../core/DashboardLayout";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
 import { createProduct, getCategories } from "./apiAdmin";
@@ -354,12 +354,12 @@ function AddProduct() {
   };
   return (
     <Box sx={{ margin: "auto", textAlign: "center" }}>
-      <Layout title="Create Product" description="">
+      <DashboardLayout title="Create Product" description="">
         {showSpinner()}
         {showError()}
         {showSuccess()}
         {newProductForm()}
-      </Layout>
+      </DashboardLayout>
     </Box>
   );
 }
