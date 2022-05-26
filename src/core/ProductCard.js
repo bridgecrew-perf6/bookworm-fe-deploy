@@ -16,7 +16,7 @@ export default function ProductCard({ product }) {
           {product.name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {product.description}
+          {product.description.substring(0, 100)}
         </Typography>
       </CardContent>
       <CardActions>

@@ -8,13 +8,14 @@ import ProductCheckbox from "./ProductCheckbox";
 import { Typography } from "@mui/material";
 import { prices } from "./fixedPrices";
 import ProductRadio from "./ProductRadio";
+import ProductCard from "./ProductCard";
 
 function Shop() {
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState(false);
   const [limit, setLimit] = useState(6);
   const [skip, setSkip] = useState(0);
-  const [filteredResults, setFilteredResults] = useState(0);
+  const [filteredResults, setFilteredResults] = useState([]);
   const [myFilters, setMyFilters] = useState({
     filtersData: {
       category: [],
@@ -39,7 +40,7 @@ function Shop() {
       if (data.error) {
         setError(data.error);
       } else {
-        setFilteredResults(data);
+        setFilteredResults(data.data);
       }
     });
   };
@@ -91,7 +92,10 @@ function Shop() {
             />
           </Grid>
           <Grid item xs={8}>
-            {JSON.stringify(filteredResults)}
+            {/* {JSON.stringify(filteredResults)} */}
+            {filteredResults.map((product, i) => (
+              <ProductCard key={i} product={product} />
+            ))}
           </Grid>
         </Grid>
       </Box>
