@@ -3,7 +3,7 @@ import Layout from "./Layout";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import { getCategories } from "./apiCore";
+import { getCategories, getFilteredProducts } from "./apiCore";
 import ProductCheckbox from "./ProductCheckbox";
 import { Typography } from "@mui/material";
 import { prices } from "./fixedPrices";
@@ -12,6 +12,9 @@ import ProductRadio from "./ProductRadio";
 function Shop() {
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState(false);
+  const [limit, setLimit] = useState(6);
+  const [skip, setSkip] = useState(0);
+  const [filteredResults, setFilteredResults] = useState(0);
   const [myFilters, setMyFilters] = useState({
     filtersData: {
       category: [],
@@ -30,8 +33,20 @@ function Shop() {
     });
   };
 
+  const loadFilteredResults = (newFilters) => {
+    // console.log(newFilters);
+    getFilteredProducts(skip, limit, newFilters).then((data) => {
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setFilteredResults(data);
+      }
+    });
+  };
+
   useEffect(() => {
     init();
+    loadFilteredResults(skip, limit, myFilters.filtersData);
   }, []);
 
   const handleFilters = (filters, filterBy) => {
@@ -42,6 +57,7 @@ function Shop() {
       let priceValues = handlePrice(filters);
       newFilters.filtersData["price"] = priceValues;
     }
+    loadFilteredResults(myFilters.filtersData);
     setMyFilters(newFilters);
   };
 
@@ -75,7 +91,7 @@ function Shop() {
             />
           </Grid>
           <Grid item xs={8}>
-            {JSON.stringify(myFilters)}
+            {JSON.stringify(filteredResults)}
           </Grid>
         </Grid>
       </Box>
