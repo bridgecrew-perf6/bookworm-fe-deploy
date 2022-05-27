@@ -10,6 +10,7 @@ import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import Divider from "@mui/material/Divider";
 import Chip from "@mui/material/Chip";
+import Search from "./Search";
 
 const Root = styled("div")(({ theme }) => ({
   width: "100%",
@@ -56,8 +57,18 @@ function Home() {
   return (
     <Layout title="Homepage" description="Node React E-commerce App">
       <CssBaseline />
-
       <Container maxWidth="md" sx={{ marginBottom: "100px" }}>
+        <Divider sx={{ marginBottom: "30px" }}>
+          <Chip
+            sx={{
+              fontSize: "20px",
+              padding: "25px 10px",
+              borderRadius: "50px",
+            }}
+            label="Book Search"
+          />
+        </Divider>
+        <Search></Search>
         {/* {JSON.stringify(productsBySell)} */}
         <Divider sx={{ marginBottom: "30px" }}>
           <Chip
