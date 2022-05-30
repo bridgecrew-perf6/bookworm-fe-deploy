@@ -7,7 +7,18 @@ function ShowImage({ item, url }) {
       <img
         src={`${API}/${url}/photo/${item._id}`}
         alt={item.name}
-        style={{ maxHeight: "100%", maxWidth: "100%" }}
+        style={{
+          // maxHeight: "100%",
+          maxHeight: "350px",
+
+          maxWidth: "100%",
+          minHeight: "350px",
+          objectFit: "cover",
+          alignItems: "center",
+          display: "block",
+          margin: "auto",
+          // padding: "10px",
+        }}
       />
     </div>
   );

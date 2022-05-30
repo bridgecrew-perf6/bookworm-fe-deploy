@@ -9,6 +9,7 @@ import PrivateRoute from "./auth/PrivateRoute";
 import UserDashboard from "./user/UserDashboard";
 import AdminRoute from "./auth/AdminRoute";
 import AdminDashboard from "./admin/AdminDashboard";
+import Product from "./core/Product";
 
 const Routes = () => {
   const theme = createTheme({
@@ -44,6 +45,7 @@ const Routes = () => {
               </AdminRoute>
             }
           />
+          <Route path="/product/:productId" element={<Product />} />
         </Switch>
       </BrowserRouter>
     </ThemeProvider>
