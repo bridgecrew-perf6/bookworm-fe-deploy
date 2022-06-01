@@ -10,6 +10,7 @@ import UserDashboard from "./user/UserDashboard";
 import AdminRoute from "./auth/AdminRoute";
 import AdminDashboard from "./admin/AdminDashboard";
 import Product from "./core/Product";
+import Cart from "./core/Cart";
 
 const Routes = () => {
   const theme = createTheme({
@@ -27,6 +28,7 @@ const Routes = () => {
         <Switch>
           <Route path="/" element={<Home />} />
           <Route path="/shop" element={<Shop />} />
+          <Route path="/cart" element={<Cart />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
           <Route

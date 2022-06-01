@@ -16,6 +16,20 @@ import MenuItem from "@mui/material/MenuItem";
 import BookOutlinedIcon from "@mui/icons-material/BookOutlined";
 import { signout, isAuthenticated } from "../auth";
 import profpic from "../images/profpic1.jpg";
+import { itemTotal } from "./cartHelpers";
+import Badge from "@mui/material/Badge";
+import { styled } from "@mui/material/styles";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  "& .MuiBadge-badge": {
+    right: -3,
+    top: 13,
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: "0 4px",
+    background: "blue",
+  },
+}));
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -39,6 +53,18 @@ const Navbar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  function cartBadge() {
+    return (
+      <NavLink to="cart" style={{ color: "#000", textDecoration: "none" }}>
+        <IconButton aria-label="cart" size="large">
+          <StyledBadge badgeContent={itemTotal()} color="secondary">
+            <ShoppingCartIcon sx={{ color: "white" }} />
+          </StyledBadge>
+        </IconButton>
+      </NavLink>
+    );
+  }
 
   return (
     <AppBar position="static" sx={{ background: "#34495e" }}>
@@ -240,18 +266,7 @@ const Navbar = () => {
               </Button>
             )}
 
-            {isAuthenticated() && (
-              <Button
-                sx={{ my: 2, color: "white", display: "block" }}
-                onClick={() => {
-                  signout(() => {
-                    navigate("/");
-                  });
-                }}
-              >
-                <span>Sign Out</span>
-              </Button>
-            )}
+            {cartBadge()}
 
             <Menu
               sx={{ mt: "45px" }}
@@ -269,11 +284,28 @@ const Navbar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleCloseUserMenu}>
+                <Typography
+                  onClick={() => {
+                    isAuthenticated().user.role == 1
+                      ? navigate("admin/dashboard/profile")
+                      : navigate("user/dashboard/profile");
+                  }}
+                >
+                  Profile
+                </Typography>
+              </MenuItem>
+              <MenuItem onClick={handleCloseUserMenu}>
+                <Typography
+                  onClick={() => {
+                    signout(() => {
+                      navigate("/");
+                    });
+                  }}
+                >
+                  Sign Out
+                </Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
