@@ -5,13 +5,15 @@ import { getCart } from "./cartHelpers";
 import ProductCard from "./ProductCard";
 // import Checkout from './Checkout';
 import Grid from "@mui/material/Grid";
+import Checkout from "./Checkout";
 
 const Cart = () => {
   const [items, setItems] = useState([]);
+  const [run, setRun] = useState(false);
 
   useEffect(() => {
     setItems(getCart());
-  }, [items]);
+  }, [run]);
 
   const showItems = (items) => {
     return (
@@ -24,6 +26,8 @@ const Cart = () => {
               product={product}
               cartUpdate={true}
               showRemoveProductButton={true}
+              setRun={setRun}
+              run={run}
             />
           );
         })}
@@ -41,7 +45,7 @@ const Cart = () => {
         {items.length > 0 ? showItems(items) : noItemsMessage()}
       </Grid>
       <Grid item xs={6}>
-        Checkout
+        <Checkout products={items} setRun={setRun} run={run} />
       </Grid>
     </Grid>
   );

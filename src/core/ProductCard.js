@@ -11,12 +11,13 @@ import { TextField } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { addItem, updateItem, removeItem } from "./cartHelpers";
-import { updateLocale } from "moment";
 
 export default function ProductCard({
   product,
   cartUpdate = false,
   showRemoveProductButton = false,
+  setRun = (f) => f,
+  run = undefined,
 }) {
   const [redirect, setRedirect] = React.useState(false);
   const [count, setCount] = React.useState(product.count);
@@ -60,7 +61,13 @@ export default function ProductCard({
   const showRemoveButton = (showRemoveProductButton) => {
     return (
       showRemoveProductButton && (
-        <Button variant="contained" onClick={() => removeItem(product._id)}>
+        <Button
+          variant="contained"
+          onClick={() => {
+            removeItem(product._id);
+            setRun(!run); // run useEffect in parent Cart
+          }}
+        >
           Remove
         </Button>
       )
@@ -68,6 +75,7 @@ export default function ProductCard({
   };
 
   const handleChange = (productId) => (event) => {
+    setRun(!run); // run useEffect in parent Cart
     setCount(parseInt(event.target.value < 1 ? 1 : event.target.value));
     if (event.target.value >= 1) {
       updateItem(productId, event.target.value);
