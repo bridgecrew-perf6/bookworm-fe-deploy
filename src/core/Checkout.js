@@ -4,6 +4,7 @@ import {
   getProducts,
   getBraintreeClientToken,
   processPayment,
+  createOrder,
 } from "./apiCore";
 import { emptyCart } from "./cartHelpers";
 import ProductCard from "./ProductCard";
@@ -42,6 +43,10 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
     getToken(userId, token);
   }, []);
 
+  const handleAddress = (event) => {
+    setData({ ...data, address: event.target.value });
+  };
+
   const getTotal = () => {
     return products.reduce((currentValue, nextValue) => {
       return currentValue + nextValue.count * nextValue.price;
@@ -64,13 +69,14 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
 
   const buy = () => {
     setData({ ...data, loading: true });
+    console.log(data);
     // send the nonce (data.instance.requestPaymentMethod) to the server
     let nonce;
     let getNonce = data.instance
       .requestPaymentMethod()
-      .then((data) => {
-        // console.log(data);
-        nonce = data.nonce;
+      .then((nonceData) => {
+        console.log(nonceData);
+        nonce = nonceData.nonce;
         // once you have nonce (card type, card number) send nonce as 'paymentMethodNonce' and also total to be charged
         // console.log(
         //   "send nonce and total to process: ",
@@ -85,6 +91,15 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
         processPayment(userId, token, paymentData)
           .then((response) => {
             console.log(response);
+
+            // empty cart and create order
+            const createOrderData = {
+              products: products,
+              transaction_id: response.transaction.id,
+              amount: response.transaction.amount,
+              address: data.address,
+            };
+            createOrder(userId, token, createOrderData);
             setData({ ...data, success: response.success });
             emptyCart(() => {
               setRun(!run); // update parent state
@@ -94,7 +109,6 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
                 success: true,
               });
             });
-            // empty cart and create order
           })
           .catch((error) => {
             console.log(error);
@@ -105,7 +119,6 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
         // console.log("dropin error: ", error);
         setData({ ...data, error: error.message });
       });
-    // getNonce();
   };
 
   const showDropIn = () => {
@@ -113,6 +126,15 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
       <Box onBlur={() => setData({ ...data, error: "" })}>
         {data.clientToken !== null && products.length > 0 ? (
           <Box>
+            <div className="gorm-group mb-3">
+              <label className="text-muted">Delivery address:</label>
+              <textarea
+                onChange={handleAddress}
+                className="form-control"
+                value={data.address}
+                placeholder="Type your delivery address here..."
+              />
+            </div>
             <DropIn
               options={{
                 authorization: data.clientToken,
