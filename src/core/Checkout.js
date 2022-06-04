@@ -16,6 +16,7 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
   const navigate = useNavigate();
 
   const [data, setData] = useState({
+    loading: false,
     success: false,
     clientToken: null,
     error: "",
@@ -62,6 +63,7 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
   };
 
   const buy = () => {
+    setData({ ...data, loading: true });
     // send the nonce (data.instance.requestPaymentMethod) to the server
     let nonce;
     let getNonce = data.instance
@@ -94,7 +96,10 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
             });
             // empty cart and create order
           })
-          .catch((error) => console.log(error));
+          .catch((error) => {
+            console.log(error);
+            setData({ loading: false });
+          });
       })
       .catch((error) => {
         // console.log("dropin error: ", error);
@@ -111,6 +116,9 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
             <DropIn
               options={{
                 authorization: data.clientToken,
+                paypal: {
+                  flow: "vault",
+                },
               }}
               onInstance={(instance) => (data.instance = instance)}
             ></DropIn>
@@ -137,10 +145,15 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
     );
   };
 
+  const showLoading = (loading) => {
+    return <Box sx={{ display: loading ? "" : "none" }}>Loading...</Box>;
+  };
+
   return (
     // <div>{JSON.stringify(products)}</div>
     <Container>
       <Box>Total: ${getTotal()}</Box>
+      {showLoading(data.loading)}
       {showSuccess(data.success)}
       {showError(data.error)}
       {showCheckout()}
