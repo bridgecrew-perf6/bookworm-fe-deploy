@@ -11,6 +11,7 @@ import AdminRoute from "./auth/AdminRoute";
 import AdminDashboard from "./admin/AdminDashboard";
 import Product from "./core/Product";
 import Cart from "./core/Cart";
+import Orders from "./admin/Orders";
 
 const Routes = () => {
   const theme = createTheme({

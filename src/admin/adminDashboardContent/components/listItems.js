@@ -77,5 +77,13 @@ export const secondaryListItems = (
         <ListItemText primary="Create Product" />
       </ListItemButton>
     </NavLink>
+    <NavLink to="orders" style={activeStyleButton}>
+      <ListItemButton>
+        <ListItemIcon>
+          <MenuBookIcon />
+        </ListItemIcon>
+        <ListItemText primary="Order List" />
+      </ListItemButton>
+    </NavLink>
   </React.Fragment>
 );
