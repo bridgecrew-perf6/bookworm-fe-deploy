@@ -12,6 +12,7 @@ import LayersIcon from "@mui/icons-material/Layers";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
+import ListAltIcon from "@mui/icons-material/ListAlt";
 import { NavLink } from "react-router-dom";
 
 const activeStyleButton = ({ isActive }) =>
@@ -80,7 +81,7 @@ export const secondaryListItems = (
     <NavLink to="orders" style={activeStyleButton}>
       <ListItemButton>
         <ListItemIcon>
-          <MenuBookIcon />
+          <ListAltIcon />
         </ListItemIcon>
         <ListItemText primary="Order List" />
       </ListItemButton>

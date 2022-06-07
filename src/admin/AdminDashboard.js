@@ -61,8 +61,6 @@ const Drawer = styled(MuiDrawer, {
   },
 }));
 
-const mdTheme = createTheme();
-
 function DashboardContent() {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
@@ -70,62 +68,60 @@ function DashboardContent() {
   };
 
   return (
-    <ThemeProvider theme={mdTheme}>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
 
-        <Drawer variant="permanent" open={open}>
-          <Toolbar
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-around",
-              px: [1],
-            }}
-          >
-            {open ? (
-              <Typography variant="h6" sx={{ fontFamily: "Lato" }}>
-                Configuration
-              </Typography>
-            ) : (
-              ""
-            )}
-
-            <IconButton onClick={toggleDrawer}>
-              {open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-            </IconButton>
-          </Toolbar>
-          <Divider />
-          <List component="nav">
-            {mainListItems}
-            <Divider sx={{ my: 1 }} />
-            {secondaryListItems}
-          </List>
-        </Drawer>
-        <Box
-          component="main"
+      <Drawer variant="permanent" open={open}>
+        <Toolbar
           sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === "light"
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            height: "92.8vh",
-            overflow: "auto",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-around",
+            px: [1],
           }}
         >
-          <Toolbar />
+          {open ? (
+            <Typography variant="h6" sx={{ fontFamily: "Lato" }}>
+              Configuration
+            </Typography>
+          ) : (
+            ""
+          )}
 
-          <Routes>
-            <Route path="/" element={<DashboardLanding />} />
-            <Route path="/profile" element={<DashboardProfile />} />
-            <Route path="/create/category" element={<AddCategory />} />
-            <Route path="/create/product" element={<AddProduct />} />
-            <Route path="/orders" element={<Orders />} />
-          </Routes>
-        </Box>
+          <IconButton onClick={toggleDrawer}>
+            {open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+          </IconButton>
+        </Toolbar>
+        <Divider />
+        <List component="nav">
+          {mainListItems}
+          <Divider sx={{ my: 1 }} />
+          {secondaryListItems}
+        </List>
+      </Drawer>
+      <Box
+        component="main"
+        sx={{
+          backgroundColor: (theme) =>
+            theme.palette.mode === "light"
+              ? theme.palette.grey[100]
+              : theme.palette.grey[900],
+          flexGrow: 1,
+          height: "92.8vh",
+          overflow: "auto",
+        }}
+      >
+        <Toolbar />
+
+        <Routes>
+          <Route path="/" element={<DashboardLanding />} />
+          <Route path="/profile" element={<DashboardProfile />} />
+          <Route path="/create/category" element={<AddCategory />} />
+          <Route path="/create/product" element={<AddProduct />} />
+          <Route path="/orders" element={<Orders />} />
+        </Routes>
       </Box>
-    </ThemeProvider>
+    </Box>
   );
 }
 

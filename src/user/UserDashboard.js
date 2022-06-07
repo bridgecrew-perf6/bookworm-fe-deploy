@@ -71,8 +71,6 @@ const Drawer = styled(MuiDrawer, {
   },
 }));
 
-const mdTheme = createTheme();
-
 function DashboardContent() {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
@@ -80,51 +78,49 @@ function DashboardContent() {
   };
 
   return (
-    <ThemeProvider theme={mdTheme}>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
 
-        <Drawer variant="permanent" open={open}>
-          <Toolbar
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              px: [1],
-            }}
-          >
-            <IconButton onClick={toggleDrawer}>
-              <ChevronLeftIcon />
-            </IconButton>
-          </Toolbar>
-          <Divider />
-          <List component="nav">
-            {mainListItems}
-            <Divider sx={{ my: 1 }} />
-            {secondaryListItems}
-          </List>
-        </Drawer>
-        <Box
-          component="main"
+      <Drawer variant="permanent" open={open}>
+        <Toolbar
           sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === "light"
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            height: "100vh",
-            overflow: "auto",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            px: [1],
           }}
         >
-          <Toolbar />
+          <IconButton onClick={toggleDrawer}>
+            <ChevronLeftIcon />
+          </IconButton>
+        </Toolbar>
+        <Divider />
+        <List component="nav">
+          {mainListItems}
+          <Divider sx={{ my: 1 }} />
+          {secondaryListItems}
+        </List>
+      </Drawer>
+      <Box
+        component="main"
+        sx={{
+          backgroundColor: (theme) =>
+            theme.palette.mode === "light"
+              ? theme.palette.grey[100]
+              : theme.palette.grey[900],
+          flexGrow: 1,
+          height: "100vh",
+          overflow: "auto",
+        }}
+      >
+        <Toolbar />
 
-          <Routes>
-            <Route path="/" element={<DashboardLanding />} />
-            <Route path="/profile" element={<DashboardProfile />} />
-          </Routes>
-        </Box>
+        <Routes>
+          <Route path="/" element={<DashboardLanding />} />
+          <Route path="/profile" element={<DashboardProfile />} />
+        </Routes>
       </Box>
-    </ThemeProvider>
+    </Box>
   );
 }
 

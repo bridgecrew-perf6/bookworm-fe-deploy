@@ -65,14 +65,7 @@ const Orders = () => {
 
   const showOrdersLength = () => {
     if (orders.length > 0) {
-      return (
-        <Typography
-          variant="h6"
-          sx={{ paddingTop: "20px", paddingBottom: "30px" }}
-        >
-          Total orders: {orders.length}
-        </Typography>
-      );
+      return <Typography>Total orders: {orders.length}</Typography>;
     } else {
       return <Typography>No orders</Typography>;
     }
@@ -102,20 +95,22 @@ const Orders = () => {
   };
 
   const showStatus = (o) => {
-    console.log(o);
     return (
       <Box>
-        {/* <Typography>{o.status}</Typography> */}
+        <Typography>{o.status}</Typography>
         <FormControl fullWidth>
-          {/* <InputLabel id="status">Status</InputLabel> */}
+          <InputLabel id="demo-simple-select-label">Age</InputLabel>
           <Select
-            id="status"
-            // value={statusValues}
-            value={o.status}
-            // label="Status"
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={statusValues}
+            label="Age"
             onChange={(e) => handleStatusChange(e, o._id)}
-            sx={{ textAlign: "center", height: "2rem" }}
           >
+            {/* <MenuItem value={10}>Ten</MenuItem>
+            <MenuItem value={20}>Twenty</MenuItem>
+            <MenuItem value={30}>Thirty</MenuItem> */}
+
             {statusValues.map((status, index) => {
               return (
                 <MenuItem key={index} value={status}>
@@ -133,7 +128,7 @@ const Orders = () => {
     transaction_id,
     status,
     customer,
-    // customer_id,
+    customer_id,
     total,
     date,
     address,
@@ -143,10 +138,22 @@ const Orders = () => {
       transaction_id,
       status,
       customer,
-      // customer_id,
+      customer_id,
       total,
       date,
       address,
+      // detail: [
+      //   {
+      //     date: "2020-01-05",
+      //     customerId: "11091700",
+      //     amount: 3,
+      //   },
+      //   {
+      //     date: "2020-01-02",
+      //     customerId: "Anonymous",
+      //     amount: 1,
+      //   },
+      // ],
       detail,
     };
   }
@@ -167,55 +174,44 @@ const Orders = () => {
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           </TableCell>
-          <TableCell align="center" component="th" scope="row">
+          <TableCell component="th" scope="row">
             {row.transaction_id}
           </TableCell>
-          <TableCell align="center">{row.status}</TableCell>
-          {/* <TableCell align="center">{row.customer_id}</TableCell> */}
-          <TableCell align="center">{row.customer}</TableCell>
-          <TableCell align="center">{row.total}</TableCell>
-          <TableCell align="center">{row.date}</TableCell>
-          <TableCell align="center">{row.address}</TableCell>
+          <TableCell align="right">{row.status}</TableCell>
+          <TableCell align="right">{row.customer}</TableCell>
+          <TableCell align="right">{row.customer_id}</TableCell>
+          <TableCell align="right">{row.total}</TableCell>
+          <TableCell align="right">{row.date}</TableCell>
+          <TableCell align="right">{row.address}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
+          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
             <Collapse in={open} timeout="auto" unmountOnExit>
-              <Box sx={{ margin: 1, marginBottom: "20px" }}>
-                <Typography
-                  variant="h6"
-                  gutterBottom
-                  component="div"
-                  sx={{
-                    fontSize: "18px",
-                    fontWeight: "600",
-                    textAlign: "center",
-                  }}
-                >
+              <Box sx={{ margin: 1 }}>
+                <Typography variant="h6" gutterBottom component="div">
                   Order Details
                 </Typography>
                 <Table size="small" aria-label="purchases">
                   <TableHead>
                     <TableRow>
-                      <TableCell align="center">No.</TableCell>
-                      <TableCell align="center">Title</TableCell>
-                      <TableCell align="center">Book ID</TableCell>
-                      <TableCell align="center">Quantity</TableCell>
-                      <TableCell align="center">Price ($)</TableCell>
-                      <TableCell align="center">Total price ($)</TableCell>
+                      <TableCell>No.</TableCell>
+                      <TableCell>Title</TableCell>
+                      <TableCell>Quantity</TableCell>
+                      <TableCell align="right">Price ($)</TableCell>
+                      <TableCell align="right">Total price ($)</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {row.detail.map((detailRow, i) => (
                       <TableRow key={i}>
-                        <TableCell align="center" component="th" scope="row">
+                        <TableCell component="th" scope="row">
                           {i + 1}
                         </TableCell>
-                        <TableCell align="center">{detailRow.name}</TableCell>
-                        <TableCell align="center">{detailRow._id}</TableCell>
+                        <TableCell>{detailRow.name}</TableCell>
 
-                        <TableCell align="center">{detailRow.count}</TableCell>
-                        <TableCell align="center">{detailRow.price}</TableCell>
-                        <TableCell align="center">
+                        <TableCell>{detailRow.count}</TableCell>
+                        <TableCell align="right">{detailRow.price}</TableCell>
+                        <TableCell align="right">
                           {detailRow.count * detailRow.price}
                         </TableCell>
                       </TableRow>
@@ -234,12 +230,16 @@ const Orders = () => {
 
   // Mapping head
   orders.map((o, oIndex) => {
+    // console.log(oIndex);
+    console.log(o.transaction_id);
+    console.log(o.products.length);
+
     rows.push(
       createData(
         o.transaction_id,
         showStatus(o),
         o.user.name,
-        // o.user._id,
+        o.user._id,
         o.products.length,
         moment(o.createdAt).fromNow(),
         o.address,
@@ -248,23 +248,54 @@ const Orders = () => {
     );
   });
 
+  // console.log(rows);
+
   return (
     <Box sx={{ margin: "auto", textAlign: "center" }}>
-      <DashboardLayout title="Order List" description="">
+      <DashboardLayout title="Create Product" description="">
         {showOrdersLength()}
+        {/* {JSON.stringify(orders)} */}
+        {orders.map((o, oIndex) => {
+          return (
+            <Box key={oIndex}>
+              <Typography>Order ID: {o._id}</Typography>
+              <ul>
+                <li>{showStatus(o)}</li>
+                <li>Transaction ID: {o.transaction_id}</li>
+                <li>Amount: {o.amount}</li>
+                <li>Ordered by: {o.user.name}</li>
+                <li>Ordered on: {moment(o.createdAt).fromNow()}</li>
+                <li>Delivery address: {o.address}</li>
+              </ul>
+              <Typography>
+                Total products in the order: {o.products.length}
+              </Typography>
+              {o.products.map((p, pIndex) => {
+                return (
+                  <Box key={pIndex}>
+                    {showInput("Product name: ", p.name)}
+                    {showInput("Product price: ", p.price)}
+                    {showInput("Product total: ", p.count)}
+                    {showInput("Product ID: ", p._id)}
+                  </Box>
+                );
+              })}
+            </Box>
+          );
+        })}
 
         <TableContainer component={Paper}>
           <Table aria-label="collapsible table">
             <TableHead>
               <TableRow>
                 <TableCell />
-                <TableCell align="center">Transaction ID</TableCell>
-                <TableCell align="center">Status</TableCell>
-                <TableCell align="center">Customer</TableCell>
-                {/* <TableCell align="center">Customer ID</TableCell> */}
-                <TableCell align="center">Total Product(s)</TableCell>
-                <TableCell align="center">Ordered On</TableCell>
-                <TableCell align="center">Delivery Address</TableCell>
+                <TableCell>Transaction ID</TableCell>
+                <TableCell align="right">Status</TableCell>
+                <TableCell align="right">Customer</TableCell>
+                <TableCell align="right">Customer ID</TableCell>
+                <TableCell align="right">Total Product(s)</TableCell>
+                <TableCell align="right">Ordered on</TableCell>
+                <TableCell align="right">Delivery Address</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
