@@ -9,7 +9,7 @@ function DashboardLayout({
   children,
 }) {
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" sx={{ minWidth: "600px" }}>
       <div className="jumbotron">
         <Typography variant="h4" textAlign="center">
           {title}

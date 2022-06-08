@@ -4,19 +4,11 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import { isAuthenticated } from "../auth";
-import { read, update, updateUser } from "./apiUser";
+import { read, update, updateAdmin } from "./apiAdmin";
 import { useState, useEffect } from "react";
 import DashboardLayout from "../core/DashboardLayout";
 import { TextField, Button } from "@mui/material";
 import { Navigate } from "react-router-dom";
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
 
 function ProfileUpdate() {
   const {
@@ -30,16 +22,15 @@ function ProfileUpdate() {
     name: "",
     email: "",
     password: "",
+    role: 1,
     error: "",
     success: false,
   });
 
-  const { name, email, password, error, success } = values;
+  const { name, email, password, role, error, success } = values;
 
   const init = (userId) => {
-    console.log(userId);
     read(userId, token).then((data) => {
-      console.log(data);
       if (data.error) {
         setValues({ ...values, error: true });
       } else {
@@ -58,16 +49,17 @@ function ProfileUpdate() {
 
   const clickSubmit = (e) => {
     e.preventDefault();
-    update(userId, token, { name, email, password }).then((data) => {
+    update(userId, token, { name, email, password, role }).then((data) => {
       if (data.error) {
         console.log(data.error);
       } else {
-        updateUser(data, () => {
+        updateAdmin(data, () => {
           setValues({
             ...values,
             name: data.name,
             email: data.email,
             success: true,
+            role: 1,
           });
         });
       }
@@ -76,7 +68,7 @@ function ProfileUpdate() {
 
   const redirectUser = (success) => {
     if (success) {
-      return <Navigate to="/user/dashboard/profile" replace />;
+      return <Navigate to="/admin/dashboard/profile" replace />;
     }
   };
 

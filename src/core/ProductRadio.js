@@ -25,6 +25,7 @@ export default function ProductRadio({ prices, handleFilters }) {
           value={price._id}
           control={<Radio />}
           label={price.name}
+          key={i}
         />
       );
     });

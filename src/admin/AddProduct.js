@@ -14,6 +14,7 @@ import {
   Select,
   MenuItem,
   makeStyles,
+  Paper,
 } from "@mui/material";
 import MuiTextField from "@mui/material/TextField";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
@@ -49,10 +50,11 @@ function AddProduct() {
     quantity: "",
     photo: "",
     loading: false,
-    error: "",
+    error: false,
     createdProduct: "",
     redirectToProfile: false,
     formData: "",
+    success: false,
   });
 
   // Load categories
@@ -61,7 +63,11 @@ function AddProduct() {
       if (data.error) {
         setValues({ ...values, error: data.error });
       } else {
-        setValues({ ...values, categories: data, formData: new FormData() });
+        setValues({
+          ...values,
+          categories: data,
+          formData: new FormData(),
+        });
       }
     });
   };
@@ -85,10 +91,11 @@ function AddProduct() {
     createdProduct,
     redirectToProfile,
     formData,
+    success,
   } = values;
 
   const closeModal = () => {
-    setValues({ ...values, error: "", success: false });
+    setValues({ ...values, error: false, success: false });
   };
 
   // HOC => function returning another function
@@ -101,7 +108,7 @@ function AddProduct() {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    setValues({ ...values, error: "", loading: true });
+    setValues({ ...values, error: false, loading: true });
     // Make request to API to create product
     createProduct(user._id, token, formData).then((data) => {
       if (data.error) {
@@ -117,7 +124,7 @@ function AddProduct() {
           quantity: "",
           photo: "",
           loading: false,
-          error: "",
+          error: false,
           createdProduct: data.name,
         });
       }
@@ -181,7 +188,7 @@ function AddProduct() {
   const showSuccess = () => {
     return (
       <Modal
-        open={createdProduct}
+        open={success}
         onClose={closeModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -212,10 +219,11 @@ function AddProduct() {
 
   const newProductForm = () => {
     return (
-      <FormControl sx={{ minWidth: "500px" }} variant="outline">
-        <FormControl focused="true">
+      <FormControl sx={{ minWidth: "500px" }} variant="outlined">
+        <FormControl>
           <TextField
             // error={name ? false : true}
+            inputProps={{ style: { background: "white" } }}
             id="name"
             label="Product Name"
             type="text"
@@ -229,6 +237,7 @@ function AddProduct() {
         </FormControl>
         <TextField
           // error={name ? false : true}
+          inputProps={{ style: { background: "white" } }}
           id="description"
           label="Product Description"
           type="text"
@@ -242,6 +251,7 @@ function AddProduct() {
 
         <TextField
           // error={name ? false : true}
+          inputProps={{ style: { background: "white" } }}
           id="price"
           label="Product Price"
           type="number"
@@ -262,6 +272,7 @@ function AddProduct() {
               value={category}
               label="Category"
               onChange={changeHandler("category")}
+              sx={{ backgroundColor: "white" }}
             >
               {categories &&
                 categories.map((c, i) => {
@@ -277,6 +288,7 @@ function AddProduct() {
 
         <TextField
           // error={name ? false : true}
+          // component={Paper}
           id="quantity"
           label="Product Quantity"
           type="number"
@@ -284,6 +296,7 @@ function AddProduct() {
           style={{
             marginTop: "25px",
           }}
+          inputProps={{ style: { background: "white" } }}
           onChange={changeHandler("quantity")}
           value={quantity}
         />
@@ -297,6 +310,7 @@ function AddProduct() {
               value={shipping}
               label="Shipping"
               onChange={changeHandler("shipping")}
+              sx={{ backgroundColor: "white" }}
             >
               <MenuItem value={0}>No</MenuItem>
               <MenuItem value={1}>Yes</MenuItem>

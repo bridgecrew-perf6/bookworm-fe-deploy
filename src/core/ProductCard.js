@@ -15,7 +15,7 @@ import { addItem, updateItem, removeItem } from "./cartHelpers";
 export default function ProductCard({
   product,
   cartUpdate = false,
-  showRemoveProductButton = false,
+  showAddToCartButton = false,
   setRun = (f) => f,
   run = undefined,
 }) {
@@ -23,7 +23,7 @@ export default function ProductCard({
   const [count, setCount] = React.useState(product.count);
 
   const addToCart = () => {
-    addItem(product, () => {
+    addItem(product, 1, () => {
       setRedirect(true);
     });
   };
@@ -58,17 +58,11 @@ export default function ProductCard({
     );
   };
 
-  const showRemoveButton = (showRemoveProductButton) => {
+  const showCartButton = (showAddToCartButton) => {
     return (
-      showRemoveProductButton && (
-        <Button
-          variant="contained"
-          onClick={() => {
-            removeItem(product._id);
-            setRun(!run); // run useEffect in parent Cart
-          }}
-        >
-          Remove
+      showAddToCartButton && (
+        <Button variant="contained" size="medium" onClick={addToCart}>
+          + <ShoppingCartIcon fontSize="small" />
         </Button>
       )
     );
@@ -106,10 +100,8 @@ export default function ProductCard({
             View
           </Button>
         </Link>
-        <Button variant="contained" size="medium" onClick={addToCart}>
-          + <ShoppingCartIcon fontSize="small" />
-        </Button>
-        {showRemoveButton(showRemoveProductButton)}
+
+        {showCartButton(showAddToCartButton)}
         {showCartUpdateOptions(cartUpdate)}
       </CardActions>
     </Card>

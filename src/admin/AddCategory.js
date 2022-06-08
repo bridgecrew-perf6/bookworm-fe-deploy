@@ -10,6 +10,7 @@ import {
   Box,
   Typography,
   CircularProgress,
+  Paper,
 } from "@mui/material";
 import { createCategory } from "./apiAdmin";
 
@@ -79,7 +80,7 @@ function AddCategory() {
   const showError = () => {
     return (
       <Modal
-        open={error}
+        open={false}
         onClose={closeModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -142,9 +143,12 @@ function AddCategory() {
 
   const newCategoryForm = () => {
     return (
-      <FormControl sx={{ minWidth: "500px" }} variant="outline">
+      <FormControl sx={{ minWidth: "500px" }} variant="outlined">
         <TextField
           // error={name ? false : true}
+          // component={Paper}
+
+          inputProps={{ style: { background: "white" } }}
           id="name"
           label=" Category Name"
           type="text"

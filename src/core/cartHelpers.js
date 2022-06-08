@@ -1,4 +1,4 @@
-export const addItem = (item, next) => {
+export const addItem = (item, amount = 1, next) => {
   let cart = [];
   if (typeof window !== "undefined") {
     if (localStorage.getItem("cart")) {
@@ -6,7 +6,7 @@ export const addItem = (item, next) => {
     }
     cart.push({
       ...item,
-      count: 1,
+      count: amount,
     });
 
     // remove duplicates

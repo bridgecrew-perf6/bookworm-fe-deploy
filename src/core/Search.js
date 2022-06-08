@@ -79,14 +79,14 @@ function Search() {
   const searchedProducts = (results = []) => {
     return (
       <Box>
-        <Typography variant="h5" textAlign="center">
+        <Typography variant="h5" textAlign="center" sx={{ padding: "20px" }}>
           {searchedMessage(searched, results)}
         </Typography>
         <Grid container spacing={4}>
           {results.map((product, i) => {
             return (
-              <Grid item xs={4}>
-                <ProductCard key={i} product={product} />
+              <Grid key={i} item xs={4}>
+                <ProductCard product={product} />
               </Grid>
             );
           })}

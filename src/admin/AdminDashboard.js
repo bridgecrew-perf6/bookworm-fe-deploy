@@ -31,6 +31,7 @@ import AddProduct from "./AddProduct";
 import Orders from "./Orders";
 import ManageProducts from "./ManageProducts";
 import UpdateProduct from "./UpdateProduct";
+import ProfileUpdate from "./ProfileUpdate";
 
 const drawerWidth = 240;
 
@@ -126,6 +127,7 @@ function DashboardContent() {
             element={<UpdateProduct />}
           />
           <Route path="/orders" element={<Orders />} />
+          <Route path="/update" element={<ProfileUpdate />} />
         </Routes>
       </Box>
     </Box>

@@ -130,8 +130,8 @@ function Shop() {
           <Grid item xs={8}>
             <Grid container spacing={4}>
               {filteredResults.map((product, i) => (
-                <Grid item xs={4}>
-                  <ProductCard key={i} product={product} />
+                <Grid key={i} item xs={4}>
+                  <ProductCard product={product} />
                 </Grid>
               ))}
             </Grid>

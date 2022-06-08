@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import MuiTextField from "@mui/material/TextField";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import { useParams } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 
 import DashboardLayout from "../core/DashboardLayout";
 import { isAuthenticated } from "../auth";
@@ -56,8 +56,9 @@ function UpdateProduct() {
     photo: "",
     loading: false,
     error: "",
+    success: false,
     createdProduct: "",
-    redirectToProfile: false,
+    redirect: false,
     formData: "",
   });
 
@@ -68,6 +69,7 @@ function UpdateProduct() {
 
   const init = (productId) => {
     getProduct(productId).then((data) => {
+      console.log(data);
       if (data.error) {
         setValues({ ...values, error: data.error });
       } else {
@@ -115,12 +117,13 @@ function UpdateProduct() {
     loading,
     error,
     createdProduct,
-    redirectToProfile,
+    success,
+    redirect,
     formData,
   } = values;
 
   const closeModal = () => {
-    setValues({ ...values, error: "", success: false });
+    setValues({ ...values, error: "", success: false, redirect: true });
   };
 
   // HOC => function returning another function
@@ -150,7 +153,9 @@ function UpdateProduct() {
           photo: "",
           loading: false,
           error: "",
+          success: true,
           createdProduct: data.name,
+          redirect: false,
         });
       }
     });
@@ -213,7 +218,7 @@ function UpdateProduct() {
   const showSuccess = () => {
     return (
       <Modal
-        open={createdProduct}
+        open={success}
         onClose={closeModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -242,9 +247,17 @@ function UpdateProduct() {
     );
   };
 
+  const redirectUser = () => {
+    console.log(redirect);
+    if (redirect) {
+      return <Navigate to="/admin/dashboard/products" replace />;
+    }
+    return;
+  };
+
   const newProductForm = () => {
     return (
-      <FormControl sx={{ minWidth: "500px" }} variant="outline">
+      <FormControl sx={{ minWidth: "500px" }} variant="outlined">
         <FormControl focused="true">
           <TextField
             // error={name ? false : true}
@@ -298,6 +311,7 @@ function UpdateProduct() {
               label="Category"
               onChange={changeHandler("category")}
               InputLabelProps={{ shrink: true }}
+              sx={{ textAlign: "left" }}
             >
               {categories &&
                 categories.map((c, i) => {
@@ -334,6 +348,7 @@ function UpdateProduct() {
               value={shipping}
               label="Shipping"
               onChange={changeHandler("shipping")}
+              sx={{ textAlign: "left" }}
             >
               <MenuItem value={0}>No</MenuItem>
               <MenuItem value={1}>Yes</MenuItem>
@@ -395,6 +410,7 @@ function UpdateProduct() {
         {showSpinner()}
         {showError()}
         {showSuccess()}
+        {redirectUser()}
         {newProductForm()}
       </DashboardLayout>
     </Box>

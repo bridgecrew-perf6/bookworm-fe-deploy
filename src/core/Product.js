@@ -19,14 +19,11 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import { styled } from "@mui/material/styles";
 import { Chip, Stack } from "@mui/material";
 import ProductCard from "./ProductCard";
-
+import { isAuthenticated } from "../auth";
 import Divider from "@mui/material/Divider";
+import { addItem } from "./cartHelpers";
 
-const TypographyFeature = styled("Typography")(() => ({
-  fontWeight: 600,
-  fontSize: "16px",
-  fontFamily: "Lato",
-}));
+const styleFeature = { fontWeight: 600, fontSize: "16px", fontFamily: "Lato" };
 
 const Product = (props) => {
   const [product, setProduct] = useState({});
@@ -36,6 +33,11 @@ const Product = (props) => {
   const [idChange, setIdChange] = useState("");
 
   const productId = useParams().productId;
+
+  const {
+    user: { role },
+  } = isAuthenticated();
+  console.log(role);
 
   const loadSingleProduct = (productId) => {
     read(productId).then((data) => {
@@ -59,6 +61,12 @@ const Product = (props) => {
     setIdChange(productId);
     loadSingleProduct(productId);
   }, [productId]);
+
+  const addToCart = () => {
+    addItem(product, quantity, () => {
+      console.log("success");
+    });
+  };
 
   return (
     <Container
@@ -95,7 +103,7 @@ const Product = (props) => {
           </Typography>
           <Stack direction="row" spacing={1}>
             <Chip
-              label={`Created at ${moment(product.createdAt).fromNow()}`}
+              label={`Created ${moment(product.createdAt).fromNow()}`}
               size="small"
               sx={{ padding: "0 10px", marginBottom: "20px" }}
             />
@@ -144,35 +152,39 @@ const Product = (props) => {
             )}
           </Stack>
 
-          <Box
-            sx={{ maxWidth: "400px", display: "flex", marginBottom: "20px" }}
-          >
-            <TextField
-              size="small"
-              type="number"
-              value={quantity}
-              variant="outlined"
-              inputProps={{
-                min: 1,
-                max: 13,
-                step: 1,
-              }}
-              onChange={(e) => setQuantity(parseInt(e.target.value))}
-              sx={{
-                maxWidth: "70px",
-                textAlign: "center",
-                paddingRight: "10px",
-              }}
-            />
-            <Button variant="contained">Add to cart</Button>
-          </Box>
+          {role == 0 && (
+            <Box
+              sx={{ maxWidth: "400px", display: "flex", marginBottom: "20px" }}
+            >
+              <TextField
+                size="small"
+                type="number"
+                value={quantity ? quantity : 1}
+                variant="outlined"
+                inputProps={{
+                  min: 1,
+                  max: product.quantity,
+                  step: 1,
+                }}
+                onChange={(e) => setQuantity(parseInt(e.target.value))}
+                sx={{
+                  maxWidth: "70px",
+                  textAlign: "center",
+                  paddingRight: "10px",
+                }}
+              />
+              <Button variant="contained" onClick={addToCart}>
+                Add to cart
+              </Button>
+            </Box>
+          )}
           <Divider sx={{ marginBottom: "20px" }} />
 
           <Grid container spacing={2} sx={{ alignSelf: "flex-end" }}>
             <Grid item xs={6} sx={{ display: "flex", alignItems: "center" }}>
               <GppGoodIcon fontSize="large" />
               <Box sx={{ marginLeft: "10px" }}>
-                <TypographyFeature>60-Days Protection</TypographyFeature>
+                <Typography sx={styleFeature}>60-Days Protection</Typography>
                 <Typography sx={{ fontSize: "14px" }}>
                   Money back guarantee
                 </Typography>
@@ -181,7 +193,7 @@ const Product = (props) => {
             <Grid item xs={6} sx={{ display: "flex", alignItems: "center" }}>
               <PaymentIcon fontSize="large" />
               <Box sx={{ marginLeft: "10px" }}>
-                <TypographyFeature>Easy Payment</TypographyFeature>
+                <Typography sx={styleFeature}>Easy Payment</Typography>
                 <Typography sx={{ fontSize: "14px" }}>
                   Debit/Credit Cards
                 </Typography>
@@ -190,7 +202,7 @@ const Product = (props) => {
             <Grid item xs={6} sx={{ display: "flex", alignItems: "center" }}>
               <SupportAgentIcon fontSize="large" />
               <Box sx={{ marginLeft: "10px" }}>
-                <TypographyFeature>Aftersales Support</TypographyFeature>
+                <Typography sx={styleFeature}>Aftersales Support</Typography>
                 <Typography sx={{ fontSize: "14px" }}>
                   24/7 product aftersales support
                 </Typography>
@@ -199,7 +211,7 @@ const Product = (props) => {
             <Grid item xs={6} sx={{ display: "flex", alignItems: "center" }}>
               <LocalShippingIcon fontSize="large" />
               <Box sx={{ marginLeft: "10px" }}>
-                <TypographyFeature>Worldwide Shipment</TypographyFeature>
+                <Typography sx={styleFeature}>Worldwide Shipment</Typography>
                 <Typography sx={{ fontSize: "14px" }}>
                   Shipping all around nations
                 </Typography>
@@ -225,8 +237,8 @@ const Product = (props) => {
       >
         {relatedProduct.map((p, i) => {
           return (
-            <Grid item xs={4}>
-              <ProductCard key={i} product={p}></ProductCard>
+            <Grid key={i} item xs={4}>
+              <ProductCard product={p}></ProductCard>
             </Grid>
           );
         })}

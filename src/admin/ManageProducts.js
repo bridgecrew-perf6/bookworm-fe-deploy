@@ -10,8 +10,13 @@ import {
   Box,
   Typography,
   CircularProgress,
+  Card,
+  CardContent,
+  CardActions,
+  Container,
 } from "@mui/material";
 import { createCategory } from "./apiAdmin";
+import { API } from "../core/config";
 
 import DashboardLayout from "../core/DashboardLayout";
 import { isAuthenticated } from "../auth";
@@ -46,39 +51,116 @@ function ManageProducts() {
     loadProducts();
   }, []);
 
+  const showProductsLength = () => {
+    return (
+      <Typography sx={{ paddingTop: "20px", paddingBottom: "30px" }}>
+        Total Products: {products.length} product(s)
+      </Typography>
+    );
+  };
+
   return (
-    <Box sx={{ margin: "auto", textAlign: "center" }}>
-      <DashboardLayout title="Manage Products" description="">
-        <div className="row">
-          <div className="col-12">
-            <h2 className="text-center">Total {products.length} products</h2>
-            <hr />
-            <ul className="list-group">
-              {products.map((p, i) => (
-                <li
-                  key={i}
-                  className="list-group-item d-flex justify-content-between align-items-center"
+    <DashboardLayout title="Manage Products" description={showProductsLength()}>
+      <Container maxWidth="sm" sx={{ margin: "auto", minWidth: "500px" }}>
+        {products.map((p, i) => (
+          <Card
+            sx={{
+              minWidth: "500px",
+              marginBottom: "20px",
+              boxShadow:
+                "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;",
+            }}
+            key={i}
+          >
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
+              <img
+                src={`${API}/product/photo/${p._id}`}
+                alt={p.name}
+                style={{
+                  maxHeight: "100px",
+                  maxWidth: "100%",
+                  minHeight: "100px",
+                  objectFit: "cover",
+                  alignItems: "center",
+                  display: "block",
+                  margin: "auto",
+                }}
+              />
+              <Box sx={{ paddingRight: "20px" }}>
+                <CardContent>
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    component="div"
+                    sx={{ fontSize: "16px", textAlign: "left" }}
+                  >
+                    {p.name}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{
+                      textAlign: "left",
+                    }}
+                  >
+                    {p.description}
+                    {/* {product.description.substring(0, 100)} */}
+                  </Typography>
+                </CardContent>
+                <CardActions
+                  style={{
+                    // justifyContent: "left",
+                    marginBottom: "10px",
+                    marginLeft: "10px",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-around",
+                    alignItems: "center",
+                  }}
                 >
-                  <strong>{p.name}</strong>
-                  <Link to={`/admin/dashboard/products/update/${p._id}`}>
-                    <span className="badge badge-warning badge-pill">
-                      Update
-                    </span>
+                  <Link
+                    to={`/product/${p._id}`}
+                    style={{ textDecoration: "none" }}
+                  >
+                    <Button
+                      variant="outlined"
+                      size="medium"
+                      sx={{ marginRight: "10px", fontSize: "12px" }}
+                    >
+                      View
+                    </Button>
                   </Link>
-                  <span
+
+                  <Link
+                    to={`/admin/dashboard/products/update/${p._id}`}
+                    style={{ textDecoration: "none", margin: 0 }}
+                  >
+                    <Button
+                      variant="contained"
+                      size="medium"
+                      sx={{ marginRight: "10px", fontSize: "12px" }}
+                    >
+                      Update
+                    </Button>
+                  </Link>
+
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    size="medium"
+                    sx={{ marginRight: "10px", fontSize: "12px" }}
                     onClick={() => destroy(p._id)}
-                    className="badge badge-danger badge-pill"
                   >
                     Delete
-                  </span>
-                </li>
-              ))}
-            </ul>
-            <br />
-          </div>
-        </div>
-      </DashboardLayout>
-    </Box>
+                  </Button>
+                </CardActions>
+              </Box>
+            </Box>
+          </Card>
+        ))}
+      </Container>
+      <br />
+    </DashboardLayout>
   );
 }
 

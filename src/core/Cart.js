@@ -1,8 +1,8 @@
-import { Typography } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getCart } from "./cartHelpers";
-import ProductCard from "./ProductCard";
+import CartProducts from "./CartProducts";
 // import Checkout from './Checkout';
 import Grid from "@mui/material/Grid";
 import Checkout from "./Checkout";
@@ -17,11 +17,21 @@ const Cart = () => {
 
   const showItems = (items) => {
     return (
-      <div>
-        <h2>Your cart has {`${items.length} item(s).`}</h2>
+      <Box>
+        <Typography
+          variant="h2"
+          sx={{
+            textAlign: "center",
+            fontSize: "20px",
+            fontWeight: 500,
+            padding: "50px 0",
+          }}
+        >
+          Your cart has {`${items.length} item(s).`}
+        </Typography>
         {items.map((product, i) => {
           return (
-            <ProductCard
+            <CartProducts
               key={i}
               product={product}
               cartUpdate={true}
@@ -31,23 +41,36 @@ const Cart = () => {
             />
           );
         })}
-      </div>
+      </Box>
     );
   };
 
   const noItemsMessage = () => {
-    return <Typography>Your cart is empty. Continue shopping.</Typography>;
+    return (
+      <Typography
+        variant="h5"
+        sx={{ margin: "auto", textAlign: "center", marginTop: "100px" }}
+      >
+        Your cart is empty. <Link to="/shop">Continue shopping</Link>.
+      </Typography>
+    );
   };
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={6}>
-        {items.length > 0 ? showItems(items) : noItemsMessage()}
-      </Grid>
-      <Grid item xs={6}>
-        <Checkout products={items} setRun={setRun} run={run} />
-      </Grid>
-    </Grid>
+    <Container maxWidth="lg">
+      {items.length > 0 ? (
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            {items.length > 0 ? showItems(items) : noItemsMessage()}
+          </Grid>
+          <Grid item xs={6}>
+            <Checkout products={items} setRun={setRun} run={run} />
+          </Grid>
+        </Grid>
+      ) : (
+        noItemsMessage()
+      )}
+    </Container>
   );
 };
 

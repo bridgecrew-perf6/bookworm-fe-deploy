@@ -273,7 +273,7 @@ const Navbar = () => {
               </Button>
             )}
 
-            {cartBadge()}
+            {/* {isAuthenticated().user.role == 0 && cartBadge()} */}
 
             <Menu
               sx={{ mt: "45px" }}

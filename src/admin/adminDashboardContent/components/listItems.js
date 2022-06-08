@@ -14,6 +14,7 @@ import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import { NavLink } from "react-router-dom";
+import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 
 const activeStyleButton = ({ isActive }) =>
   isActive
@@ -35,15 +36,7 @@ export const mainListItems = (
         <ListItemIcon>
           <PeopleIcon />
         </ListItemIcon>
-        <ListItemText primary="User Info" />
-      </ListItemButton>
-    </NavLink>
-    <NavLink to="cart" style={activeStyleButton}>
-      <ListItemButton>
-        <ListItemIcon>
-          <ShoppingCartIcon />
-        </ListItemIcon>
-        <ListItemText primary="Cart" />
+        <ListItemText primary="Admin Info" />
       </ListItemButton>
     </NavLink>
     <NavLink to="update" style={activeStyleButton}>
@@ -81,7 +74,7 @@ export const secondaryListItems = (
     <NavLink to="products" style={activeStyleButton}>
       <ListItemButton>
         <ListItemIcon>
-          <ListAltIcon />
+          <LibraryBooksIcon />
         </ListItemIcon>
         <ListItemText primary="Manage Products" />
       </ListItemButton>

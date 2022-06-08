@@ -66,11 +66,8 @@ const Orders = () => {
   const showOrdersLength = () => {
     if (orders.length > 0) {
       return (
-        <Typography
-          variant="h6"
-          sx={{ paddingTop: "20px", paddingBottom: "30px" }}
-        >
-          Total orders: {orders.length}
+        <Typography sx={{ paddingTop: "20px", paddingBottom: "30px" }}>
+          Total Orders: {orders.length} order(s)
         </Typography>
       );
     } else {
@@ -102,7 +99,7 @@ const Orders = () => {
   };
 
   const showStatus = (o) => {
-    console.log(o);
+    // console.log(o);
     return (
       <Box>
         {/* <Typography>{o.status}</Typography> */}
@@ -130,6 +127,7 @@ const Orders = () => {
   };
 
   function createData(
+    key,
     transaction_id,
     status,
     customer,
@@ -140,6 +138,7 @@ const Orders = () => {
     detail
   ) {
     return {
+      key,
       transaction_id,
       status,
       customer,
@@ -236,6 +235,7 @@ const Orders = () => {
   orders.map((o, oIndex) => {
     rows.push(
       createData(
+        oIndex,
         o.transaction_id,
         showStatus(o),
         o.user.name,
@@ -248,10 +248,12 @@ const Orders = () => {
     );
   });
 
+  // console.log(rows);
+
   return (
     <Box sx={{ margin: "auto", textAlign: "center" }}>
-      <DashboardLayout title="Order List" description="">
-        {showOrdersLength()}
+      <DashboardLayout title="Order List" description={showOrdersLength()}>
+        {/* {showOrdersLength()} */}
 
         <TableContainer component={Paper}>
           <Table aria-label="collapsible table">
@@ -268,8 +270,8 @@ const Orders = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
-                <Row key={row.name} row={row} />
+              {rows.map((row, index) => (
+                <Row key={index} row={row} />
               ))}
             </TableBody>
           </Table>

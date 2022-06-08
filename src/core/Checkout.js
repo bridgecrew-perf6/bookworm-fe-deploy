@@ -8,7 +8,15 @@ import {
 } from "./apiCore";
 import { emptyCart } from "./cartHelpers";
 import ProductCard from "./ProductCard";
-import { Box, Container, Typography, Button, fabClasses } from "@mui/material";
+import {
+  Box,
+  Container,
+  Typography,
+  Button,
+  fabClasses,
+  Card,
+  TextField,
+} from "@mui/material";
 import { isAuthenticated } from "../auth";
 import { useNavigate } from "react-router-dom";
 import DropIn from "braintree-web-drop-in-react";
@@ -126,7 +134,7 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
       <Box onBlur={() => setData({ ...data, error: "" })}>
         {data.clientToken !== null && products.length > 0 ? (
           <Box>
-            <div className="gorm-group mb-3">
+            {/* <div className="gorm-group mb-3">
               <label className="text-muted">Delivery address:</label>
               <textarea
                 onChange={handleAddress}
@@ -134,7 +142,8 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
                 value={data.address}
                 placeholder="Type your delivery address here..."
               />
-            </div>
+            </div> */}
+
             <DropIn
               options={{
                 authorization: data.clientToken,
@@ -144,7 +153,29 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
               }}
               onInstance={(instance) => (data.instance = instance)}
             ></DropIn>
-            <Button variant="contained" onClick={buy}>
+            <TextField
+              label="Delivery Address"
+              variant="outlined"
+              onChange={handleAddress}
+              value={data.address}
+              sx={{ width: "100%", paddingBottom: "20px", marginTop: "20px" }}
+              inputProps={{
+                style: { fontSize: 14 },
+              }}
+            />
+
+            <Typography
+              sx={{
+                // textAlign: "center",
+                fontSize: "16px",
+                fontWeight: 500,
+                paddingBottom: "20px",
+              }}
+            >
+              Total Payment: ${getTotal()}
+            </Typography>
+
+            <Button variant="contained" onClick={buy} sx={{ width: "100%" }}>
               Pay
             </Button>
           </Box>
@@ -174,11 +205,34 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
   return (
     // <div>{JSON.stringify(products)}</div>
     <Container>
-      <Box>Total: ${getTotal()}</Box>
-      {showLoading(data.loading)}
-      {showSuccess(data.success)}
-      {showError(data.error)}
-      {showCheckout()}
+      <Box>
+        <Typography
+          variant="h2"
+          sx={{
+            textAlign: "center",
+            fontSize: "20px",
+            fontWeight: 500,
+            padding: "50px 0",
+          }}
+        >
+          Payment Process
+        </Typography>
+      </Box>
+      <Card
+        sx={{
+          maxWidth: "50vw",
+          marginBottom: "20px",
+          boxShadow:
+            "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;",
+        }}
+      >
+        <Box sx={{ padding: "30px" }}>
+          {showLoading(data.loading)}
+          {showSuccess(data.success)}
+          {showError(data.error)}
+          {showCheckout()}
+        </Box>
+      </Card>
     </Container>
   );
 };
