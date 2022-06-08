@@ -78,6 +78,14 @@ export const secondaryListItems = (
         <ListItemText primary="Create Product" />
       </ListItemButton>
     </NavLink>
+    <NavLink to="products" style={activeStyleButton}>
+      <ListItemButton>
+        <ListItemIcon>
+          <ListAltIcon />
+        </ListItemIcon>
+        <ListItemText primary="Manage Products" />
+      </ListItemButton>
+    </NavLink>
     <NavLink to="orders" style={activeStyleButton}>
       <ListItemButton>
         <ListItemIcon>

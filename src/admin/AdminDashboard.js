@@ -29,6 +29,8 @@ import DashboardProfile from "./adminDashboardContent/DashboardProfile";
 import AddCategory from "./AddCategory";
 import AddProduct from "./AddProduct";
 import Orders from "./Orders";
+import ManageProducts from "./ManageProducts";
+import UpdateProduct from "./UpdateProduct";
 
 const drawerWidth = 240;
 
@@ -118,6 +120,11 @@ function DashboardContent() {
           <Route path="/profile" element={<DashboardProfile />} />
           <Route path="/create/category" element={<AddCategory />} />
           <Route path="/create/product" element={<AddProduct />} />
+          <Route path="/products" element={<ManageProducts />} />
+          <Route
+            path="/products/update/:productId"
+            element={<UpdateProduct />}
+          />
           <Route path="/orders" element={<Orders />} />
         </Routes>
       </Box>
