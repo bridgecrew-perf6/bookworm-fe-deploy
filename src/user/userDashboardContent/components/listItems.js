@@ -10,6 +10,7 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import LayersIcon from "@mui/icons-material/Layers";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import { NavLink } from "react-router-dom";
 
 const activeStyleButton = ({ isActive }) =>
@@ -43,12 +44,12 @@ export const mainListItems = (
         <ListItemText primary="Update Profile" />
       </ListItemButton>
     </NavLink>
-    <NavLink to="cart" style={activeStyleButton}>
+    <NavLink to="history" style={activeStyleButton}>
       <ListItemButton>
         <ListItemIcon>
-          <ShoppingCartIcon />
+          <ShoppingBasketIcon />
         </ListItemIcon>
-        <ListItemText primary="Cart" />
+        <ListItemText primary="Purchase History" />
       </ListItemButton>
     </NavLink>
   </React.Fragment>
