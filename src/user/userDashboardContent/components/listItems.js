@@ -32,7 +32,15 @@ export const mainListItems = (
         <ListItemIcon>
           <PeopleIcon />
         </ListItemIcon>
-        <ListItemText primary="User Info" />
+        <ListItemText primary="Profile" />
+      </ListItemButton>
+    </NavLink>
+    <NavLink to="update" style={activeStyleButton}>
+      <ListItemButton>
+        <ListItemIcon>
+          <ManageAccountsIcon />
+        </ListItemIcon>
+        <ListItemText primary="Update Profile" />
       </ListItemButton>
     </NavLink>
     <NavLink to="cart" style={activeStyleButton}>
@@ -41,14 +49,6 @@ export const mainListItems = (
           <ShoppingCartIcon />
         </ListItemIcon>
         <ListItemText primary="Cart" />
-      </ListItemButton>
-    </NavLink>
-    <NavLink to="update" style={activeStyleButton}>
-      <ListItemButton>
-        <ListItemIcon>
-          <ManageAccountsIcon />
-        </ListItemIcon>
-        <ListItemText primary="Update Info" />
       </ListItemButton>
     </NavLink>
   </React.Fragment>

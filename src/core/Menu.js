@@ -221,7 +221,14 @@ const Navbar = () => {
           </Box>
 
           {/* Tooltip in Wide View */}
-          <Box sx={{ flexGrow: 0, display: "flex" }}>
+          <Box
+            sx={{
+              flexGrow: 0,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             {isAuthenticated() && (
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

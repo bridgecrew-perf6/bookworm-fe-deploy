@@ -24,6 +24,7 @@ import {
 import { Routes, Route } from "react-router-dom";
 import DashboardLanding from "./userDashboardContent/DashboardLanding";
 import DashboardProfile from "./userDashboardContent/DashboardProfile";
+import ProfileUpdate from "./ProfileUpdate";
 
 function Copyright(props) {
   return (
@@ -118,6 +119,7 @@ function DashboardContent() {
         <Routes>
           <Route path="/" element={<DashboardLanding />} />
           <Route path="/profile" element={<DashboardProfile />} />
+          <Route path="/update" element={<ProfileUpdate />} />
         </Routes>
       </Box>
     </Box>
