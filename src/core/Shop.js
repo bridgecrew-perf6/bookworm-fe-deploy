@@ -9,6 +9,7 @@ import { Typography, Button } from "@mui/material";
 import { prices } from "./fixedPrices";
 import ProductRadio from "./ProductRadio";
 import ProductCard from "./ProductCard";
+import { isAuthenticated } from "../auth";
 
 function Shop() {
   const [categories, setCategories] = useState([]);
@@ -17,6 +18,8 @@ function Shop() {
   const [skip, setSkip] = useState(0);
   const [size, setSize] = useState(0);
   const [filteredResults, setFilteredResults] = useState([]);
+  const [role, setRole] = useState(0);
+
   const [myFilters, setMyFilters] = useState({
     filtersData: {
       category: [],
@@ -81,6 +84,13 @@ function Shop() {
   };
 
   useEffect(() => {
+    if (isAuthenticated().user) {
+      const { user } = isAuthenticated();
+      setRole(user.role);
+    }
+  }, []);
+
+  useEffect(() => {
     init();
     loadFilteredResults(skip, limit, myFilters.filtersData);
   }, []);
@@ -131,7 +141,12 @@ function Shop() {
             <Grid container spacing={4}>
               {filteredResults.map((product, i) => (
                 <Grid key={i} item xs={4}>
-                  <ProductCard product={product} />
+                  <ProductCard
+                    product={product}
+                    showAddToCartButton={
+                      isAuthenticated().user && role == 0 ? true : false
+                    }
+                  />
                 </Grid>
               ))}
             </Grid>

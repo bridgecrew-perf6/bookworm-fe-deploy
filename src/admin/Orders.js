@@ -71,19 +71,12 @@ const Orders = () => {
         </Typography>
       );
     } else {
-      return <Typography>No orders</Typography>;
+      return (
+        <Typography sx={{ paddingTop: "20px", paddingBottom: "30px" }}>
+          No orders found!
+        </Typography>
+      );
     }
-  };
-
-  const showInput = (key, value) => {
-    return (
-      <Box>
-        <Box>
-          <Box>{key}</Box>
-        </Box>
-        <Box>{value}</Box>
-      </Box>
-    );
   };
 
   const handleStatusChange = (e, orderId) => {
@@ -255,27 +248,31 @@ const Orders = () => {
       <DashboardLayout title="Order List" description={showOrdersLength()}>
         {/* {showOrdersLength()} */}
 
-        <TableContainer component={Paper}>
-          <Table aria-label="collapsible table">
-            <TableHead>
-              <TableRow>
-                <TableCell />
-                <TableCell align="center">Transaction ID</TableCell>
-                <TableCell align="center">Status</TableCell>
-                <TableCell align="center">Customer</TableCell>
-                {/* <TableCell align="center">Customer ID</TableCell> */}
-                <TableCell align="center">Total Product(s)</TableCell>
-                <TableCell align="center">Ordered On</TableCell>
-                <TableCell align="center">Delivery Address</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row, index) => (
-                <Row key={index} row={row} />
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        {orders.length ? (
+          <TableContainer component={Paper} sx={{ marginTop: "20px" }}>
+            <Table aria-label="collapsible table">
+              <TableHead>
+                <TableRow>
+                  <TableCell />
+                  <TableCell align="center">Transaction ID</TableCell>
+                  <TableCell align="center">Status</TableCell>
+                  <TableCell align="center">Customer</TableCell>
+                  {/* <TableCell align="center">Customer ID</TableCell> */}
+                  <TableCell align="center">Total Product(s)</TableCell>
+                  <TableCell align="center">Ordered On</TableCell>
+                  <TableCell align="center">Delivery Address</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row, index) => (
+                  <Row key={index} row={row} />
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        ) : (
+          ""
+        )}
       </DashboardLayout>
     </Box>
   );

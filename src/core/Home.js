@@ -26,6 +26,7 @@ function Home() {
   const [productsBySell, setProductsBySell] = useState([]);
   const [productsByArrival, setProductsByArrival] = useState([]);
   const [error, setError] = useState(false);
+  const [role, setRole] = useState(0);
 
   const loadProductsBySell = () => {
     getProducts("sold").then((data) => {
@@ -47,13 +48,12 @@ function Home() {
     });
   };
 
-  let role = 0;
+  // let role = 0;
   // Saat mount
   useEffect(() => {
-    if (isAuthenticated()) {
+    if (isAuthenticated().user) {
       const { user } = isAuthenticated();
-      console.log(user.role);
-      role = user.role;
+      setRole(user.role);
     }
     loadProductsByArrival();
     loadProductsBySell();
@@ -122,7 +122,9 @@ function Home() {
             <Grid key={i} item xs={4}>
               <ProductCard
                 product={product}
-                showAddToCartButton={role == 0 ? true : false}
+                showAddToCartButton={
+                  isAuthenticated().user && role == 0 ? true : false
+                }
               />
             </Grid>
           ))}
@@ -142,7 +144,12 @@ function Home() {
         <Grid container spacing={4}>
           {productsBySell.map((product, i) => (
             <Grid key={i} item xs={4}>
-              <ProductCard product={product} />
+              <ProductCard
+                product={product}
+                showAddToCartButton={
+                  isAuthenticated().user && role == 0 ? true : false
+                }
+              />
             </Grid>
           ))}
         </Grid>

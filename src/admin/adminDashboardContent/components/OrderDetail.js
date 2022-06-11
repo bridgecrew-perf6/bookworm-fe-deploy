@@ -7,7 +7,7 @@ import { isAuthenticated } from "../../../auth";
 import { listOrders } from "../../apiAdmin";
 import moment from "moment";
 
-export default function Deposits() {
+export default function OrderDetail() {
   const [orders, setOrders] = useState([]);
 
   const { user, token } = isAuthenticated();
@@ -26,23 +26,11 @@ export default function Deposits() {
     loadOrders();
   }, []);
 
-  // console.log(orders);
-
-  let getTotal = () => {
-    let totalSales = 0;
-    for (let i = 0; i < orders.length; i++) {
-      totalSales += orders[i].amount;
-    }
-    return totalSales.toFixed(2);
-  };
-
-  // console.log(getTotal());
-
   return (
     <React.Fragment>
-      <Title>Total Sales</Title>
+      <Title>Total Orders</Title>
       <Typography component="p" variant="h4">
-        ${getTotal()}
+        {orders.length} Orders
       </Typography>
       <Typography color="text.secondary">
         per {moment(new Date()).format("DD MMM, YYYY")}

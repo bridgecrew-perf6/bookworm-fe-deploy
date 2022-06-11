@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Layout from "./Layout";
 import { list, getCategories } from "./apiCore";
 import ProductCard from "./ProductCard";
-import { Input, Box, Button, Typography, Container, Grid } from "@mui/material";
+import { Box, Button, Typography, Grid } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import Stack from "@mui/material/Stack";
-import ButtonGroup from "@mui/material/ButtonGroup";
 
 function Search() {
   const [data, setData] = useState({

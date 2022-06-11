@@ -6,88 +6,86 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Title from "./Title";
-
-// Generate Order Data
-function createData(id, date, name, shipTo, paymentMethod, amount) {
-  return { id, date, name, shipTo, paymentMethod, amount };
-}
-
-const rows = [
-  createData(
-    0,
-    "16 Mar, 2019",
-    "Elvis Presley",
-    "Tupelo, MS",
-    "VISA ⠀•••• 3719",
-    312.44
-  ),
-  createData(
-    1,
-    "16 Mar, 2019",
-    "Paul McCartney",
-    "London, UK",
-    "VISA ⠀•••• 2574",
-    866.99
-  ),
-  createData(
-    2,
-    "16 Mar, 2019",
-    "Tom Scholz",
-    "Boston, MA",
-    "MC ⠀•••• 1253",
-    100.81
-  ),
-  createData(
-    3,
-    "16 Mar, 2019",
-    "Michael Jackson",
-    "Gary, IN",
-    "AMEX ⠀•••• 2000",
-    654.39
-  ),
-  createData(
-    4,
-    "15 Mar, 2019",
-    "Bruce Springsteen",
-    "Long Branch, NJ",
-    "VISA ⠀•••• 5919",
-    212.79
-  ),
-];
-
-function preventDefault(event) {
-  event.preventDefault();
-}
+import { useState, useEffect } from "react";
+import { isAuthenticated } from "../../../auth";
+import { listOrders } from "../../apiAdmin";
+import moment from "moment";
+import { Box, Typography } from "@mui/material";
 
 export default function Orders() {
+  const [orders, setOrders] = useState([]);
+  const [show, setShow] = useState(5);
+
+  const { user, token } = isAuthenticated();
+
+  const loadOrders = () => {
+    listOrders(user._id, token).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        setOrders(data);
+      }
+    });
+  };
+
+  useEffect(() => {
+    loadOrders();
+  }, []);
+
+  // console.log(orders);
+  function addShow() {
+    setShow(() => show + 5);
+  }
+
   return (
     <React.Fragment>
       <Title>Recent Orders</Title>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Date</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Ship To</TableCell>
-            <TableCell>Payment Method</TableCell>
-            <TableCell align="right">Sale Amount</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.shipTo}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{`$${row.amount}`}</TableCell>
+
+      {!orders.length ? (
+        <Box>
+          <Typography
+            sx={{ fontWeight: "500", textAlign: "center", fontSize: "20px" }}
+          >
+            No orders yet!
+          </Typography>
+        </Box>
+      ) : (
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell>Date</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Ship To</TableCell>
+              <TableCell align="right">Sale Amount</TableCell>
+              <TableCell>Status</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
-        See more orders
-      </Link>
+          </TableHead>
+
+          <TableBody>
+            {orders.slice(0, show).map((order, index) => (
+              <TableRow key={index}>
+                <TableCell>
+                  {moment(order.createdAt).format("DD MMM, YYYY")}
+                </TableCell>
+                <TableCell>{order.user.name}</TableCell>
+                <TableCell>{order.address}</TableCell>
+                <TableCell align="right">{`$${order.amount}`}</TableCell>
+                <TableCell>{order.status}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
+
+      {orders.length > show && (
+        <Link
+          color="primary"
+          onClick={addShow}
+          sx={{ mt: 3, cursor: "pointer" }}
+        >
+          See more orders
+        </Link>
+      )}
     </React.Fragment>
   );
 }

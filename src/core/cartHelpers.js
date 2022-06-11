@@ -20,7 +20,7 @@ export const addItem = (item, amount = 1, next) => {
     cart = Array.from(
       new Set(
         cart.map((p) => {
-          console.log(p.name);
+          // console.log(p.name);
           return p._id;
         })
       )

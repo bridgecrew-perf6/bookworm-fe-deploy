@@ -100,7 +100,7 @@ function AddProduct() {
 
   // HOC => function returning another function
   const changeHandler = (name) => (event) => {
-    console.log(event);
+    // console.log(event);
     const value = name === "photo" ? event.target.files[0] : event.target.value;
     formData.set(name, value);
     setValues({ ...values, error: false, [name]: value });
@@ -125,6 +125,7 @@ function AddProduct() {
           photo: "",
           loading: false,
           error: false,
+          success: true,
           createdProduct: data.name,
         });
       }
@@ -207,10 +208,10 @@ function AddProduct() {
           }}
         >
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Register success
+            Product created
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Category '{name}' is created successfully.
+            Product '{createdProduct}' is created successfully.
           </Typography>
         </Box>
       </Modal>
@@ -272,7 +273,7 @@ function AddProduct() {
               value={category}
               label="Category"
               onChange={changeHandler("category")}
-              sx={{ backgroundColor: "white" }}
+              sx={{ backgroundColor: "white", textAlign: "left" }}
             >
               {categories &&
                 categories.map((c, i) => {
@@ -310,7 +311,7 @@ function AddProduct() {
               value={shipping}
               label="Shipping"
               onChange={changeHandler("shipping")}
-              sx={{ backgroundColor: "white" }}
+              sx={{ backgroundColor: "white", textAlign: "left" }}
             >
               <MenuItem value={0}>No</MenuItem>
               <MenuItem value={1}>Yes</MenuItem>

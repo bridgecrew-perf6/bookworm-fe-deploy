@@ -73,7 +73,7 @@ export default function CartProducts({
     }
   };
 
-  console.log(product);
+  // console.log(product);
 
   return (
     <Card

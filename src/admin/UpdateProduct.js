@@ -65,11 +65,11 @@ function UpdateProduct() {
   // const [categories, setCategories] = useState([]);
 
   const params = useParams();
-  console.log(params.productId);
+  // console.log(params.productId);
 
   const init = (productId) => {
     getProduct(productId).then((data) => {
-      console.log(data);
+      // console.log(data);
       if (data.error) {
         setValues({ ...values, error: data.error });
       } else {
@@ -128,7 +128,7 @@ function UpdateProduct() {
 
   // HOC => function returning another function
   const changeHandler = (name) => (event) => {
-    console.log(event);
+    // console.log(event);
     const value = name === "photo" ? event.target.files[0] : event.target.value;
     formData.set(name, value);
     setValues({ ...values, error: false, [name]: value });
@@ -248,7 +248,7 @@ function UpdateProduct() {
   };
 
   const redirectUser = () => {
-    console.log(redirect);
+    // console.log(redirect);
     if (redirect) {
       return <Navigate to="/admin/dashboard/products" replace />;
     }
@@ -307,11 +307,12 @@ function UpdateProduct() {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={category}
+              value=""
               label="Category"
               onChange={changeHandler("category")}
               InputLabelProps={{ shrink: true }}
               sx={{ textAlign: "left" }}
+              defaultValue=""
             >
               {categories &&
                 categories.map((c, i) => {
@@ -345,10 +346,11 @@ function UpdateProduct() {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={shipping}
+              value=""
               label="Shipping"
               onChange={changeHandler("shipping")}
               sx={{ textAlign: "left" }}
+              defaultValue=""
             >
               <MenuItem value={0}>No</MenuItem>
               <MenuItem value={1}>Yes</MenuItem>
@@ -404,9 +406,11 @@ function UpdateProduct() {
       </FormControl>
     );
   };
+
+  // console.log(category);
   return (
     <Box sx={{ margin: "auto", textAlign: "center" }}>
-      <DashboardLayout title="Create Product" description="">
+      <DashboardLayout title="Update Product" description="">
         {showSpinner()}
         {showError()}
         {showSuccess()}

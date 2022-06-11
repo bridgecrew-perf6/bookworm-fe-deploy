@@ -11,6 +11,7 @@ import { TextField } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { addItem, updateItem, removeItem } from "./cartHelpers";
+import { isAuthenticated } from "../auth";
 
 export default function ProductCard({
   product,
@@ -22,7 +23,14 @@ export default function ProductCard({
   const [redirect, setRedirect] = React.useState(false);
   const [count, setCount] = React.useState(product.count);
 
+  const { user } = isAuthenticated();
+  // console.log(user);
+
   const addToCart = () => {
+    // if (user == undefined) {
+    //   console.log("navigate");
+    //   return <Navigate to="/cart" replace />;
+    // }
     addItem(product, 1, () => {
       setRedirect(true);
     });
@@ -60,7 +68,8 @@ export default function ProductCard({
 
   const showCartButton = (showAddToCartButton) => {
     return (
-      showAddToCartButton && (
+      showAddToCartButton &&
+      product.quantity > 0 && (
         <Button variant="contained" size="medium" onClick={addToCart}>
           + <ShoppingCartIcon fontSize="small" />
         </Button>
@@ -77,22 +86,37 @@ export default function ProductCard({
   };
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345, height: "100%" }}>
       {shouldRedirect(redirect)}
       <ShowImage item={product} url="product" />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {product.name}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {product.description.substring(0, 100)}
-        </Typography>
+        {product.name.length > 12 ? (
+          <Typography gutterBottom variant="h5" component="div">
+            {product.name.substring(0, 12)}...
+          </Typography>
+        ) : (
+          <Typography gutterBottom variant="h5" component="div">
+            {product.name}
+          </Typography>
+        )}
+
+        {product.description.length > 45 ? (
+          <Typography variant="body2" color="text.secondary">
+            {product.description.substring(0, 45)}...
+          </Typography>
+        ) : (
+          <Typography variant="body2" color="text.secondary">
+            {product.description}
+          </Typography>
+        )}
       </CardContent>
       <CardActions
         style={{
           justifyContent: "left",
           marginBottom: "10px",
           marginLeft: "10px",
+          marginTop: "auto",
+          bottom: "20",
         }}
       >
         <Link to={`/product/${product._id}`} style={{ textDecoration: "none" }}>

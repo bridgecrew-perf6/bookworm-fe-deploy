@@ -8,18 +8,17 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import { ListItemText } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import BookOutlinedIcon from "@mui/icons-material/BookOutlined";
 import { signout, isAuthenticated } from "../auth";
-import profpic from "../images/profpic1.jpg";
 import { itemTotal } from "./cartHelpers";
 import Badge from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { useEffect, useState } from "react";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -53,6 +52,12 @@ const Navbar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  useEffect(() => {
+    if (isAuthenticated().user) {
+      const { user } = isAuthenticated();
+    }
+  }, []);
 
   function cartBadge() {
     return (
@@ -232,7 +237,11 @@ const Navbar = () => {
             {isAuthenticated() && (
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src={profpic} />
+                  {/* <Avatar alt="Remy Sharp" src={profpic} />
+                   */}
+                  <Avatar sx={{ backgroundColor: "white", color: "black" }}>
+                    {isAuthenticated().user.name[0].toUpperCase()}
+                  </Avatar>
                 </IconButton>
               </Tooltip>
             )}
@@ -273,8 +282,9 @@ const Navbar = () => {
               </Button>
             )}
 
-            {/* {isAuthenticated().user.role == 0 && cartBadge()} */}
-
+            {isAuthenticated().user &&
+              isAuthenticated().user.role == 0 &&
+              cartBadge()}
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"

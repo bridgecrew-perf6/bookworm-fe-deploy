@@ -4,45 +4,36 @@ import Typography from "@mui/material/Typography";
 import Title from "./Title";
 import { useState, useEffect } from "react";
 import { isAuthenticated } from "../../../auth";
-import { listOrders } from "../../apiAdmin";
+import { getPurchaseHistory } from "../../apiUser";
 import moment from "moment";
 
-export default function Deposits() {
-  const [orders, setOrders] = useState([]);
+export default function OrderDetail() {
+  const {
+    user: { _id },
+    token,
+  } = isAuthenticated();
 
-  const { user, token } = isAuthenticated();
+  const [history, setHistory] = useState([]);
 
-  const loadOrders = () => {
-    listOrders(user._id, token).then((data) => {
+  const init = (userId, token) => {
+    getPurchaseHistory(userId, token).then((data) => {
       if (data.error) {
         console.log(data.error);
       } else {
-        setOrders(data);
+        setHistory(data);
       }
     });
   };
 
   useEffect(() => {
-    loadOrders();
+    init(_id, token);
   }, []);
-
-  // console.log(orders);
-
-  let getTotal = () => {
-    let totalSales = 0;
-    for (let i = 0; i < orders.length; i++) {
-      totalSales += orders[i].amount;
-    }
-    return totalSales.toFixed(2);
-  };
-
-  // console.log(getTotal());
 
   return (
     <React.Fragment>
-      <Title>Total Sales</Title>
+      <Title>Total Transaction(s)</Title>
       <Typography component="p" variant="h4">
-        ${getTotal()}
+        {history.length} Transaction(s)
       </Typography>
       <Typography color="text.secondary">
         per {moment(new Date()).format("DD MMM, YYYY")}

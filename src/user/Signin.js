@@ -163,7 +163,7 @@ function Signin() {
           }}
         >
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Register Error
+            Signin Error
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {values.error}

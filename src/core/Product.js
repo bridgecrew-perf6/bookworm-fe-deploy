@@ -22,22 +22,33 @@ import ProductCard from "./ProductCard";
 import { isAuthenticated } from "../auth";
 import Divider from "@mui/material/Divider";
 import { addItem } from "./cartHelpers";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const styleFeature = { fontWeight: 600, fontSize: "16px", fontFamily: "Lato" };
 
 const Product = (props) => {
+  const navigate = useNavigate();
+
   const [product, setProduct] = useState({});
   const [relatedProduct, setRelatedProduct] = useState([]);
   const [error, setError] = useState(false);
   const [quantity, setQuantity] = useState(0);
   const [idChange, setIdChange] = useState("");
+  const [role, setRole] = useState(0);
 
   const productId = useParams().productId;
 
-  const {
-    user: { role },
-  } = isAuthenticated();
-  console.log(role);
+  // const {
+  //   user: { role },
+  // } = isAuthenticated();
+  // console.log(role);
+
+  useEffect(() => {
+    if (isAuthenticated().user) {
+      const { user } = isAuthenticated();
+      setRole(user.role);
+    }
+  }, []);
 
   const loadSingleProduct = (productId) => {
     read(productId).then((data) => {
@@ -64,7 +75,7 @@ const Product = (props) => {
 
   const addToCart = () => {
     addItem(product, quantity, () => {
-      console.log("success");
+      return navigate("/cart");
     });
   };
 
@@ -152,7 +163,7 @@ const Product = (props) => {
             )}
           </Stack>
 
-          {role == 0 && (
+          {isAuthenticated().user && role == 0 && product.quantity > 0 && (
             <Box
               sx={{ maxWidth: "400px", display: "flex", marginBottom: "20px" }}
             >
@@ -220,29 +231,34 @@ const Product = (props) => {
           </Grid>
         </Box>
       </Box>
-      <Divider sx={{ marginBottom: "30px", marginTop: "60px" }}>
-        <Chip
-          sx={{
-            fontSize: "20px",
-            padding: "25px 10px",
-            borderRadius: "50px",
-          }}
-          label="Related product"
-        />
-      </Divider>
-      <Grid
-        container
-        spacing={4}
-        sx={{ justifyContent: "center", marginBottom: "30px" }}
-      >
-        {relatedProduct.map((p, i) => {
-          return (
-            <Grid key={i} item xs={4}>
-              <ProductCard product={p}></ProductCard>
-            </Grid>
-          );
-        })}
-      </Grid>
+      {relatedProduct.length > 0 && (
+        <Box>
+          <Divider sx={{ marginBottom: "30px", marginTop: "60px" }}>
+            <Chip
+              sx={{
+                fontSize: "20px",
+                padding: "25px 10px",
+                borderRadius: "50px",
+              }}
+              label="Related product"
+            />
+          </Divider>
+
+          <Grid
+            container
+            spacing={4}
+            sx={{ justifyContent: "center", marginBottom: "30px" }}
+          >
+            {relatedProduct.map((p, i) => {
+              return (
+                <Grid key={i} item xs={4}>
+                  <ProductCard product={p}></ProductCard>
+                </Grid>
+              );
+            })}
+          </Grid>
+        </Box>
+      )}
     </Container>
   );
 };

@@ -77,13 +77,13 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
 
   const buy = () => {
     setData({ ...data, loading: true });
-    console.log(data);
+    // console.log(data);
     // send the nonce (data.instance.requestPaymentMethod) to the server
     let nonce;
     let getNonce = data.instance
       .requestPaymentMethod()
       .then((nonceData) => {
-        console.log(nonceData);
+        // console.log(nonceData);
         nonce = nonceData.nonce;
         // once you have nonce (card type, card number) send nonce as 'paymentMethodNonce' and also total to be charged
         // console.log(
@@ -98,7 +98,7 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
 
         processPayment(userId, token, paymentData)
           .then((response) => {
-            console.log(response);
+            // console.log(response);
 
             // empty cart and create order
             const createOrderData = {
@@ -185,12 +185,12 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
   };
 
   const showError = (error) => {
-    console.log(error);
+    // console.log(error);
     return <Box sx={{ display: error ? "" : "none" }}>{error}</Box>;
   };
 
   const showSuccess = (success) => {
-    console.log(success);
+    // console.log(success);
     return (
       <Box sx={{ display: success ? "" : "none" }}>
         Thanks! Your payment was successful.

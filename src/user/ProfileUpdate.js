@@ -1,7 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import { isAuthenticated } from "../auth";
 import { read, update, updateUser } from "./apiUser";
@@ -9,14 +8,6 @@ import { useState, useEffect } from "react";
 import DashboardLayout from "../core/DashboardLayout";
 import { TextField, Button } from "@mui/material";
 import { Navigate } from "react-router-dom";
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
 
 function ProfileUpdate() {
   const {
@@ -37,9 +28,7 @@ function ProfileUpdate() {
   const { name, email, password, error, success } = values;
 
   const init = (userId) => {
-    console.log(userId);
     read(userId, token).then((data) => {
-      console.log(data);
       if (data.error) {
         setValues({ ...values, error: true });
       } else {

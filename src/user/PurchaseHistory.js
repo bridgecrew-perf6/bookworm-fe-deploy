@@ -1,32 +1,29 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import Stack from "@mui/material/Stack";
-import { styled } from "@mui/material/styles";
+import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Typography,
+  Collapse,
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
 import { isAuthenticated } from "../auth";
-import { read, update, updateUser } from "./apiUser";
-import { useState, useEffect } from "react";
 import DashboardLayout from "../core/DashboardLayout";
-import { TextField, Button } from "@mui/material";
-import { Navigate } from "react-router-dom";
-import { getPurchaseHistory } from "./apiUser";
 import moment from "moment";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { getPurchaseHistory } from "./apiUser";
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
-
-function PurchaseHistory() {
+const PurchaseHistory = () => {
   const {
-    user: { _id, name, email, role },
+    user: { _id },
     token,
   } = isAuthenticated();
-
-  // const userId = _id;
 
   const [history, setHistory] = useState([]);
 
@@ -44,43 +41,140 @@ function PurchaseHistory() {
     init(_id, token);
   }, []);
 
-  console.log(history);
+  function Row(props) {
+    const { row } = props;
+    const [open, setOpen] = React.useState(false);
 
-  const purchaseHistory = (history) => {
     return (
-      <div className="card mb-5">
-        <h3 className="card-header">Purchase history</h3>
-        <ul className="list-group">
-          <li className="list-group-item">
-            {history.map((h, i) => {
-              return (
-                <div>
-                  <hr />
-                  {h.products.map((p, i) => {
-                    return (
-                      <div key={i}>
-                        <h6>Product name: {p.name}</h6>
-                        <h6>Product price: ${p.price}</h6>
-                        <h6>Purchased date: {moment(h.createdAt).fromNow()}</h6>
-                      </div>
-                    );
-                  })}
-                </div>
-              );
-            })}
-          </li>
-        </ul>
-      </div>
+      // <div>Ok</div>
+      <React.Fragment>
+        <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
+          <TableCell>
+            <IconButton
+              aria-label="expand row"
+              size="small"
+              onClick={() => setOpen(!open)}
+            >
+              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+          </TableCell>
+          <TableCell align="center" component="th" scope="row">
+            {row.transaction_id}
+          </TableCell>
+          <TableCell align="center">{row.status}</TableCell>
+
+          <TableCell align="center">{row.products.length}</TableCell>
+          <TableCell align="right">$ {row.amount}</TableCell>
+          <TableCell align="center">
+            {moment(row.createdAt).fromNow()}
+          </TableCell>
+          <TableCell align="center">{row.address}</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
+            <Collapse in={open} timeout="auto" unmountOnExit>
+              <Box sx={{ margin: 1, marginBottom: "20px" }}>
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  component="div"
+                  sx={{
+                    fontSize: "18px",
+                    fontWeight: "600",
+                    textAlign: "center",
+                  }}
+                >
+                  Purchase Details
+                </Typography>
+                <Table size="small" aria-label="purchases">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="center">No.</TableCell>
+                      <TableCell align="center">Title</TableCell>
+                      <TableCell align="center">Book ID</TableCell>
+                      <TableCell align="center">Quantity</TableCell>
+                      <TableCell align="center">Price ($)</TableCell>
+                      <TableCell align="center">Total price ($)</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {row.products.map((detailRow, i) => (
+                      <TableRow key={i}>
+                        <TableCell align="center" component="th" scope="row">
+                          {i + 1}
+                        </TableCell>
+                        <TableCell align="center">{detailRow.name}</TableCell>
+                        <TableCell align="center">{detailRow._id}</TableCell>
+
+                        <TableCell align="center">{detailRow.count}</TableCell>
+                        <TableCell align="center">{detailRow.price}</TableCell>
+                        <TableCell align="center">
+                          {detailRow.count * detailRow.price}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Box>
+            </Collapse>
+          </TableCell>
+        </TableRow>
+      </React.Fragment>
     );
+  }
+
+  const showPurchaseLength = () => {
+    if (history.length > 0) {
+      return (
+        <Typography sx={{ paddingTop: "20px", paddingBottom: "30px" }}>
+          Total Purchase: {history.length} purchase(s)
+        </Typography>
+      );
+    } else {
+      return (
+        <Typography sx={{ paddingTop: "20px", paddingBottom: "30px" }}>
+          No purchase found!
+        </Typography>
+      );
+    }
   };
 
   return (
     <Box sx={{ margin: "auto", textAlign: "center" }}>
-      <DashboardLayout title="Update Profile" description="">
-        {purchaseHistory(history)}
+      <DashboardLayout
+        title="Purchase History"
+        description={showPurchaseLength()}
+      >
+        {/* {showOrdersLength()} */}
+
+        {history.length ? (
+          <TableContainer component={Paper} sx={{ marginTop: "20px" }}>
+            <Table aria-label="collapsible table">
+              <TableHead>
+                <TableRow>
+                  <TableCell />
+                  <TableCell align="center">Transaction ID</TableCell>
+                  <TableCell align="center">Status</TableCell>
+                  <TableCell align="center">Total Product(s)</TableCell>
+                  {/* <TableCell align="center">Customer ID</TableCell> */}
+                  <TableCell align="right">Total Price</TableCell>
+                  <TableCell align="center">Ordered On</TableCell>
+                  <TableCell align="center">Delivery Address</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {history.map((row, index) => (
+                  <Row key={index} row={row} />
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        ) : (
+          ""
+        )}
       </DashboardLayout>
     </Box>
   );
-}
+};
 
 export default PurchaseHistory;

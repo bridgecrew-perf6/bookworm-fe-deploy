@@ -17,12 +17,12 @@ function Signup() {
     email: "",
     password: "",
     isLoading: false,
-    error: "",
+    error: false,
     success: false,
   });
 
   const closeModal = () => {
-    setValues({ ...values, error: "", success: false });
+    setValues({ ...values, error: false, success: false });
   };
 
   const changeHandler = (property) => (event) => {
@@ -49,7 +49,7 @@ function Signup() {
           name: "",
           email: "",
           password: "",
-          error: "",
+          error: false,
           success: true,
           isLoading: false,
         });
